@@ -62,8 +62,8 @@ export default function Matches({ appState }) {
                   <p style={{ fontSize: 12, color: '#9B8C84' }}>{person.major} · {person.year}</p>
                 </div>
                 <span style={{
-                  fontSize: 11, fontWeight: 600, color: '#059669',
-                  background: '#ECFDF5', padding: '3px 10px', borderRadius: 999,
+                  fontSize: 11, fontWeight: 600, color: '#6B5C55',
+                  background: '#E3D5CA', padding: '3px 10px', borderRadius: 999,
                 }}>
                   Matched
                 </span>

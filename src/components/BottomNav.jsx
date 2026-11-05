@@ -46,7 +46,12 @@ export default function BottomNav() {
       }}
     >
       {tabs.map(({ label, path, Icon }) => {
-        const active = pathname.startsWith(path)
+        const isActive = (path) => {
+          if (path === '/weekly') return pathname.startsWith('/weekly') || pathname.startsWith('/overlap')
+          if (path === '/messages') return pathname.startsWith('/messages') || pathname.startsWith('/chat')
+          return pathname.startsWith(path)
+        }
+        const active = isActive(path)
         return (
           <button
             key={path}

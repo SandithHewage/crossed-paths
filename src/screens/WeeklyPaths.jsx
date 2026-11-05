@@ -5,7 +5,7 @@ import { people } from '../data/people'
 import BottomNav from '../components/BottomNav'
 
 const ChevronRight = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D5BDAF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B8C84" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 18l6-6-6-6"/>
   </svg>
 )

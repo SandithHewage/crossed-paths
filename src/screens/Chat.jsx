@@ -123,7 +123,7 @@ export default function Chat({ chats, setChats }) {
         padding: '12px 16px',
         background: '#EDEDE9', borderTop: '1px solid #D6CCC2', borderBottom: '1px solid #D6CCC2', flexShrink: 0,
       }}>
-        <button onClick={() => navigate('/messages')} style={{
+        <button onClick={() => navigate(-1)} style={{
           width: 30, height: 30, borderRadius: '50%',
           background: '#F5EBE0', border: '1px solid #D6CCC2',
           display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
@@ -198,7 +198,7 @@ export default function Chat({ chats, setChats }) {
         <input
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && send()}
+          onKeyDown={e => e.key === 'Enter' && !thinking && send()}
           placeholder="Message..."
           style={{
             flex: 1, background: '#F5EBE0', borderRadius: 22,
@@ -206,7 +206,7 @@ export default function Chat({ chats, setChats }) {
             border: '1px solid #D6CCC2', outline: 'none',
           }}
         />
-        <button onClick={send} disabled={!input.trim()} style={{
+        <button onClick={send} disabled={!input.trim() || thinking} style={{
           width: 36, height: 36, borderRadius: '50%',
           background: input.trim() ? '#D5BDAF' : '#E3D5CA',
           border: '1px solid #D6CCC2',

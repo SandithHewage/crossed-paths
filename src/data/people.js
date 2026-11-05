@@ -11,8 +11,8 @@ export const people = [
     avatarText: '#3B2EA0',
     overlaps: [
       { location: 'Center Hall', days: 'Mon · Wed', time: '10:00 AM' },
-      { location: 'Geisel Library', days: 'Tue · Thu', time: 'Evenings' },
-      { location: 'Price Center', days: 'Fri', time: 'Lunch' },
+      { location: 'Geisel Library', days: 'Tue · Thu', time: '6:00 PM' },
+      { location: 'Price Center', days: 'Fri', time: '12:30 PM' },
     ],
     chat: [
       { from: 'them', text: 'Hey! Wild that we keep running into each other lol', time: '2:14 PM' },
@@ -34,7 +34,7 @@ export const people = [
     avatarText: '#1E4A8A',
     overlaps: [
       { location: 'CSE Building', days: 'Mon · Wed · Fri', time: '9:00 AM' },
-      { location: 'Price Center', days: 'Wed', time: 'Lunch' },
+      { location: 'Price Center', days: 'Wed', time: '12:30 PM' },
     ],
     chat: [],
   },
@@ -50,7 +50,7 @@ export const people = [
     avatarText: '#1A6647',
     overlaps: [
       { location: 'Social Sciences Bldg', days: 'Tue · Thu', time: '1:00 PM' },
-      { location: 'Geisel Library', days: 'Mon', time: 'Mornings' },
+      { location: 'Geisel Library', days: 'Mon', time: '9:00 AM' },
     ],
     chat: [],
   },
@@ -66,7 +66,7 @@ export const people = [
     avatarText: '#8B2020',
     overlaps: [
       { location: 'Natural Sciences Bldg', days: 'Mon · Wed', time: '11:00 AM' },
-      { location: 'Price Center', days: 'Fri', time: 'Lunch' },
+      { location: 'Price Center', days: 'Fri', time: '12:30 PM' },
     ],
     chat: [],
   },

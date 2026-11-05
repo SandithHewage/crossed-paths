@@ -58,7 +58,7 @@ export default function OverlapDetail({ appState, setAppState }) {
       <div className="flex-1 overflow-y-auto scrollable">
 
         <div className="flex items-center gap-3 px-5 pt-5 pb-3">
-          <button onClick={() => navigate('/weekly')} style={{
+          <button onClick={() => navigate(-1)} style={{
             width: 32, height: 32, borderRadius: '50%',
             background: '#EDEDE9', border: '1px solid #D6CCC2',
             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
@@ -148,14 +148,24 @@ export default function OverlapDetail({ appState, setAppState }) {
 
         <div className="px-5 mt-5 mb-6">
           {connected ? (
-            <div style={{
-              width: '100%', padding: '14px 0', borderRadius: 14,
-              background: '#E3D5CA', color: '#16112B',
-              fontSize: 14, fontWeight: 600, textAlign: 'center',
-              border: '1px solid #D6CCC2',
-            }}>
-              Request sent
-            </div>
+            person.id === 1 ? (
+              <button onClick={() => navigate(`/chat/${person.id}`)} style={{
+                width: '100%', padding: '14px 0', borderRadius: 14,
+                background: '#D5BDAF', color: '#16112B',
+                fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
+              }}>
+                Message {person.name}
+              </button>
+            ) : (
+              <div style={{
+                width: '100%', padding: '14px 0', borderRadius: 14,
+                background: '#E3D5CA', color: '#16112B',
+                fontSize: 14, fontWeight: 600, textAlign: 'center',
+                border: '1px solid #D6CCC2',
+              }}>
+                Request sent
+              </div>
+            )
           ) : (
             <button onClick={handleConnect} style={{
               width: '100%', padding: '15px 0', borderRadius: 14,
@@ -174,6 +184,7 @@ export default function OverlapDetail({ appState, setAppState }) {
       <AnimatePresence>
         {showMatch && (
           <div
+            onClick={() => setShowMatch(false)}
             style={{
               position: 'absolute', inset: 0,
               background: 'rgba(44,35,32,0.35)',
@@ -181,6 +192,7 @@ export default function OverlapDetail({ appState, setAppState }) {
             }}
           >
             <motion.div
+              onClick={e => e.stopPropagation()}
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
               style={{ width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0', padding: '28px 24px 36px' }}
@@ -217,9 +229,9 @@ export default function OverlapDetail({ appState, setAppState }) {
                   onChange={e => setOpener(e.target.value)}
                   style={{
                     width: '100%', fontSize: 13.5, color: '#16112B', lineHeight: 1.5,
-                    background: 'transparent', border: 'none', outline: 'none',
-                    resize: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-                    minHeight: 56,
+                    background: 'transparent', border: 'none', borderBottom: '1px solid #D6CCC2',
+                    outline: 'none', resize: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
+                    minHeight: 56, paddingBottom: 4,
                   }}
                 />
               </div>
