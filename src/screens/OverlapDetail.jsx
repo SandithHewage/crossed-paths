@@ -175,6 +175,7 @@ export default function OverlapDetail({ appState, setAppState }) {
         {showMatch && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             style={{
               position: 'absolute', inset: 0,
               background: 'rgba(44,35,32,0.35)',
@@ -183,7 +184,7 @@ export default function OverlapDetail({ appState, setAppState }) {
           >
             <motion.div
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-              transition={{ type: 'spring', stiffness: 280, damping: 30 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
               style={{ width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0', padding: '28px 24px 36px' }}
             >
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
