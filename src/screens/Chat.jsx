@@ -202,7 +202,7 @@ export default function Chat({ chats, setChats }) {
           placeholder="Message..."
           style={{
             flex: 1, background: '#F5EBE0', borderRadius: 22,
-            padding: '10px 16px', fontSize: 14, color: '#16112B',
+            padding: '10px 16px', fontSize: 16, color: '#16112B',
             border: '1px solid #D6CCC2', outline: 'none',
           }}
         />

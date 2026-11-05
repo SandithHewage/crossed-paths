@@ -86,7 +86,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                 <span style={{
                   fontSize: 12, color: '#6B5C55', background: '#F5EBE0',
                   padding: '4px 10px', borderRadius: 999, fontWeight: 500,
-                  border: '1px solid #D6CCC2',
+                  border: '1px solid #D6CCC2', whiteSpace: 'nowrap',
                 }}>
                   {person.crossCount}× this week
                 </span>
