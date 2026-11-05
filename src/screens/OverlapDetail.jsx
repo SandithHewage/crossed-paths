@@ -173,9 +173,7 @@ export default function OverlapDetail({ appState, setAppState }) {
 
       <AnimatePresence>
         {showMatch && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+          <div
             style={{
               position: 'absolute', inset: 0,
               background: 'rgba(44,35,32,0.35)',
@@ -249,7 +247,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                 </button>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
