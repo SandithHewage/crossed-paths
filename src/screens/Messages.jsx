@@ -58,9 +58,9 @@ export default function Messages({ appState, chats }) {
                     <div style={{
                       width: 42, height: 42, borderRadius: '50%', background: person.avatarBg,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 13, fontWeight: 700, color: person.avatarText, flexShrink: 0,
+                      fontSize: 22, flexShrink: 0,
                     }}>
-                      {person.initials}
+                      😊
                     </div>
                   )}
                   <div style={{ flex: 1, minWidth: 0 }}>

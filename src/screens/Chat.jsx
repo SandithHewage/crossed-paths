@@ -147,9 +147,9 @@ export default function Chat({ chats, setChats }) {
           <div style={{
             width: 34, height: 34, borderRadius: '50%', background: person.avatarBg,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 12, fontWeight: 700, color: person.avatarText,
+            fontSize: 18,
           }}>
-            {person.initials}
+            😊
           </div>
         )}
         <div style={{ flex: 1 }}>
