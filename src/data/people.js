@@ -9,6 +9,7 @@ export const people = [
     score: 92,
     avatarBg: '#D4CFFB',
     avatarText: '#3B2EA0',
+    profileImage: null,
     overlaps: [
       { location: 'Center Hall', days: 'Mon · Wed', time: '10:00 AM' },
       { location: 'Geisel Library', days: 'Tue · Thu', time: '6:00 PM' },
@@ -32,6 +33,7 @@ export const people = [
     score: 78,
     avatarBg: '#C7DDF9',
     avatarText: '#1E4A8A',
+    profileImage: null,
     overlaps: [
       { location: 'CSE Building', days: 'Mon · Wed · Fri', time: '9:00 AM' },
       { location: 'Price Center', days: 'Wed', time: '12:30 PM' },
@@ -48,6 +50,7 @@ export const people = [
     score: 71,
     avatarBg: '#C5F0E2',
     avatarText: '#1A6647',
+    profileImage: null,
     overlaps: [
       { location: 'Social Sciences Bldg', days: 'Tue · Thu', time: '1:00 PM' },
       { location: 'Geisel Library', days: 'Mon', time: '9:00 AM' },
@@ -64,6 +67,7 @@ export const people = [
     score: 65,
     avatarBg: '#FDDADA',
     avatarText: '#8B2020',
+    profileImage: null,
     overlaps: [
       { location: 'Natural Sciences Bldg', days: 'Mon · Wed', time: '11:00 AM' },
       { location: 'Price Center', days: 'Fri', time: '12:30 PM' },
@@ -80,6 +84,7 @@ export const people = [
     score: 60,
     avatarBg: '#FDE9C0',
     avatarText: '#7A4D0A',
+    profileImage: null,
     overlaps: [
       { location: 'Rady School', days: 'Tue · Thu', time: '2:00 PM' },
     ],
