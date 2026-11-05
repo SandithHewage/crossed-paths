@@ -134,13 +134,24 @@ export default function Chat({ chats, setChats }) {
         }}>
           <BackIcon />
         </button>
-        <div style={{
-          width: 34, height: 34, borderRadius: '50%', background: person.avatarBg,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 12, fontWeight: 700, color: person.avatarText,
-        }}>
-          {person.initials}
-        </div>
+        {person.profileImage ? (
+          <img
+            src={person.profileImage}
+            alt={person.name}
+            style={{
+              width: 34, height: 34, borderRadius: '50%',
+              objectFit: 'cover', border: '1px solid #D6CCC2',
+            }}
+          />
+        ) : (
+          <div style={{
+            width: 34, height: 34, borderRadius: '50%', background: person.avatarBg,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 12, fontWeight: 700, color: person.avatarText,
+          }}>
+            {person.initials}
+          </div>
+        )}
         <div style={{ flex: 1 }}>
           <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B' }}>{person.name}</p>
           <p style={{ fontSize: 11, color: '#9B8C84' }}>{person.major}</p>

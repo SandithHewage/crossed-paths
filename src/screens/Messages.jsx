@@ -45,20 +45,31 @@ export default function Messages({ appState, chats }) {
                     border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left',
                   }}
                 >
-                  <div style={{
-                    width: 42, height: 42, borderRadius: '50%', background: person.avatarBg,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 13, fontWeight: 700, color: person.avatarText, flexShrink: 0,
-                  }}>
-                    {person.initials}
-                  </div>
+                  {person.profileImage ? (
+                    <img
+                      src={person.profileImage}
+                      alt={person.name}
+                      style={{
+                        width: 42, height: 42, borderRadius: '50%',
+                        objectFit: 'cover', flexShrink: 0, border: '1px solid #D6CCC2',
+                      }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: 42, height: 42, borderRadius: '50%', background: person.avatarBg,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 13, fontWeight: 700, color: person.avatarText, flexShrink: 0,
+                    }}>
+                      {person.initials}
+                    </div>
+                  )}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B' }}>{person.name}</p>
                     <p style={{ fontSize: 12, color: '#9B8C84', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {last ? last.text : 'Say hi!'}
                     </p>
                   </div>
-                  <span style={{ fontSize: 11, color: '#D5BDAF', flexShrink: 0 }}>Today</span>
+                  <span style={{ fontSize: 11, color: '#D5BDAF', flexShrink: 0 }}>{last?.time ?? 'Today'}</span>
                 </motion.button>
               )
             })}
