@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #E3D5CA;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+
+/* Mobile: scale phone to 75% of viewport, centered */
+@media (max-width: 480px) {
+  #root {
+    padding: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .phone-wrapper {
+    transform: scale(0.75);
+    transform-origin: center center;
+    margin: calc(844px * -0.125) calc(390px * -0.125);
+  }
+}
+
+/* hide scrollbars inside phone shell */
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
+.scrollable {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pulse-fast {
+  animation: pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes wave {
+  0%, 60%, 100% { opacity: 0.2; }
+  30% { opacity: 1; }
+}
