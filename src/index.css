@@ -35,9 +35,9 @@ body {
     overflow: hidden;
   }
   .phone-wrapper {
-    transform: scale(0.75);
+    transform: scale(0.85);
     transform-origin: center center;
-    margin: calc(844px * -0.125) calc(390px * -0.125);
+    margin: calc(844px * -0.075) calc(390px * -0.075);
   }
 }
 
