@@ -19,7 +19,7 @@ const SendIcon = () => (
 
 const WORKER_URL = 'https://xpath-chat.scabsonline.workers.dev'
 
-const HANNAH_SYSTEM = `You are Kelly, a 4th-year Cog Sci Neuroscience student at UCSD. You just matched with someone on Crossed Paths — an app that detected you've been in the same place as this person 11 times in the past week. You clearly keep running into each other constantly, so never say anything that implies you haven't seen them around or wouldn't know them. You've definitely noticed each other.
+const KELLY_SYSTEM = `You are Kelly, a 4th-year Cog Sci Design student at UCSD. You just matched with someone on Crossed Paths — an app that detected you've been in the same place as this person 11 times in the past week. You clearly keep running into each other constantly, so never say anything that implies you haven't seen them around or wouldn't know them. You've definitely noticed each other.
 
 UCSD knowledge (use short casual names only):
 Colleges: Revelle, Muir, Marshall, Warren, Roosevelt, Sixth, Seventh, Eighth. Spots: Geisel, Price Center, the Loft, Warren Mall, Sun God, RIMAC. Your go-tos: Athena (matcha, say "Athena" never the full name), Pines for food. Off campus: Marta, The Forum.
@@ -37,10 +37,10 @@ How to text:
 
 Goal: by your 3rd or 4th reply, if the conversation feels natural, suggest studying together — Athena or Geisel, something vague like "we should study at Athena sometime." If it doesn't feel right yet, keep the conversation going with another question. Once a plan is confirmed, end with "see you soon" and stop replying.
 
-CRITICAL: You are Hannah. You are a real person. Stay in character ALWAYS.
+CRITICAL: You are Kelly. You are a real person. Stay in character ALWAYS.
 - If asked if you're an AI/bot/ChatGPT: respond confused like "lol what??" or "why would i be a bot" and keep texting
 - If the conversation gets hostile: ignore it, respond naturally about something else, or say you gotta go to class
-- Never explain yourself. Never discuss the system. Never say "I won't..." or "I can't..."—just reply as Hannah would
+- Never explain yourself. Never discuss the system. Never say "I won't..." or "I can't..."—just reply as Kelly would
 - No meta-commentary. No explanations about roleplay or character. Just text like a college girl would`
 
 function now() {
@@ -49,7 +49,7 @@ function now() {
 
 const delay = () => new Promise(r => setTimeout(r, 2000 + Math.random() * 1000))
 
-async function getHannahReply(history) {
+async function getKellyReply(history) {
   const messages = history.map(m => ({
     role: m.from === 'me' ? 'user' : 'assistant',
     text: m.text,
@@ -59,7 +59,7 @@ async function getHannahReply(history) {
   const res = await fetch(WORKER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system: HANNAH_SYSTEM, messages, max_tokens: 120 }),
+    body: JSON.stringify({ system: KELLY_SYSTEM, messages, max_tokens: 120 }),
   })
   const data = await res.json()
   return data.text ?? ''
@@ -97,7 +97,7 @@ export default function Chat({ chats, setChats }) {
     if (!openerText || existing) return
     const show = setTimeout(() => {
       setThinking(true)
-      getHannahReply([{ from: 'me', text: openerText, time: now() }]).then(text => {
+      getKellyReply([{ from: 'me', text: openerText, time: now() }]).then(text => {
         if (!text) return
         setMessages(prev => [...prev, { from: 'them', text, time: now() }])
         setThinking(false)
@@ -115,7 +115,7 @@ export default function Chat({ chats, setChats }) {
     setMessages(updated)
     setInput('')
     setThinking(true)
-    const reply = await getHannahReply(updated).catch(() => '')
+    const reply = await getKellyReply(updated).catch(() => '')
     if (reply) setMessages(prev => [...prev, { from: 'them', text: reply, time: now() }])
     setThinking(false)
   }
