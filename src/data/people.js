@@ -3,7 +3,7 @@ export const people = [
     id: 1,
     initials: 'KL',
     name: 'Kelly Lin',
-    major: 'Cog Sci Neuroscience',
+    major: 'Cog Sci Design',
     year: '4th year',
     crossCount: 11,
     score: 92,
