@@ -4,18 +4,19 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { people } from '../data/people'
 import BottomNav from '../components/BottomNav'
 
-function ScoreArc({ score }) {
+function ScoreArc({ score, isKelly = false }) {
   const size = 100
   const cx = 50, cy = 50, r = 38
   const circ = 2 * Math.PI * r
   const offset = circ - (score / 100) * circ
+  const arcColor = getScoreColor(score, isKelly)
 
   return (
     <div style={{ position: 'relative', width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ position: 'absolute', transform: 'rotate(-90deg)' }}>
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="#E3D5CA" strokeWidth="9"/>
         <circle cx={cx} cy={cy} r={r} fill="none"
-          stroke="#D5BDAF" strokeWidth="9"
+          stroke={arcColor} strokeWidth="9"
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
         />
       </svg>
@@ -32,6 +33,13 @@ const BackIcon = () => (
     <path d="M15 18l-6-6 6-6"/>
   </svg>
 )
+
+const getScoreColor = (score, isKelly = false) => {
+  if (isKelly) return '#C1FFC1' // kelly always green
+  if (score <= 33) return '#FFB3BA' // pastel red
+  if (score <= 66) return '#FFFF99' // pastel yellow
+  return '#C1FFC1' // pastel green
+}
 
 export default function OverlapDetail({ appState, setAppState }) {
   const { id } = useParams()
@@ -104,7 +112,7 @@ export default function OverlapDetail({ appState, setAppState }) {
             <div style={{ height: 1, background: '#D6CCC2', margin: '14px 0' }} />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <ScoreArc score={person.score} />
+              <ScoreArc score={person.score} isKelly={true} />
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {[
                   { label: 'Frequency', value: freq, max: 40 },
