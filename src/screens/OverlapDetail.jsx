@@ -180,11 +180,11 @@ export default function OverlapDetail({ appState, setAppState }) {
               background: '#D5BDAF', color: '#16112B',
               fontSize: 15, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
             }}>
-              Connect
+              Open to saying hi
             </button>
           )}
           <p style={{ textAlign: 'center', fontSize: 12, color: '#9B8C84', marginTop: 8 }}>
-            They'll only see your name if they connect too.
+            They'll only know if they're open too.
           </p>
         </div>
       </div>
@@ -227,7 +227,7 @@ export default function OverlapDetail({ appState, setAppState }) {
               </div>
 
               <p style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: '#9B8C84', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>
-                It's a match
+                You're both open to saying hi
               </p>
               <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 700, color: '#16112B', letterSpacing: '-0.3px', marginBottom: 4 }}>
                 Meet Kelly
@@ -251,27 +251,39 @@ export default function OverlapDetail({ appState, setAppState }) {
                 />
               </div>
 
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <button
-                  onClick={() => { setShowMatch(false); navigate('/chat/1', { state: { opener } }) }}
+                  onClick={() => { setShowMatch(false); navigate('/chat/1', { state: { opener, fromNudge: false } }) }}
                   style={{
-                    flex: 1, padding: '13px 0', borderRadius: 12,
+                    width: '100%', padding: '13px 0', borderRadius: 12,
                     background: '#D5BDAF', color: '#16112B',
                     fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
                   }}
                 >
-                  Send a message
+                  See where to meet
                 </button>
-                <button
-                  onClick={() => setShowMatch(false)}
-                  style={{
-                    padding: '13px 20px', borderRadius: 12,
-                    background: '#EDEDE9', color: '#6B5C55',
-                    fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
-                  }}
-                >
-                  Later
-                </button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    onClick={() => { setShowMatch(false); navigate('/chat/1', { state: { opener, fromNudge: false } }) }}
+                    style={{
+                      flex: 1, padding: '11px 0', borderRadius: 12,
+                      background: 'transparent', color: '#6B5C55',
+                      fontSize: 13, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
+                    }}
+                  >
+                    Send a message
+                  </button>
+                  <button
+                    onClick={() => setShowMatch(false)}
+                    style={{
+                      padding: '11px 18px', borderRadius: 12,
+                      background: 'transparent', color: '#9B8C84',
+                      fontSize: 13, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
+                    }}
+                  >
+                    Later
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

@@ -43,23 +43,29 @@ CRITICAL: You are Kelly. You are a real person. Stay in character ALWAYS.
 - Never explain yourself. Never discuss the system. Never say "I won't..." or "I can't..."—just reply as Kelly would
 - No meta-commentary. No explanations about roleplay or character. Just text like a college girl would`
 
+const KELLY_NUDGE_ADDENDUM = `
+
+Context: you just got a nudge that this person said hi to you nearby on campus. They already came up to you IRL. Keep it warm and brief — you already met. Say something like 'oh that was you! lol' or 'glad you said hi'. Do NOT suggest studying — you already made a plan in person. End with 'see you soon' naturally.`
+
 function now() {
   return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
 }
 
 const delay = () => new Promise(r => setTimeout(r, 2000 + Math.random() * 1000))
 
-async function getKellyReply(history) {
+async function getKellyReply(history, fromNudge = false) {
   const messages = history.map(m => ({
     role: m.from === 'me' ? 'user' : 'assistant',
     text: m.text,
   })).map(({ role, text }) => ({ role, content: text }))
 
+  const system = fromNudge ? KELLY_SYSTEM + KELLY_NUDGE_ADDENDUM : KELLY_SYSTEM
+
   await delay()
   const res = await fetch(WORKER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system: KELLY_SYSTEM, messages, max_tokens: 120 }),
+    body: JSON.stringify({ system, messages, max_tokens: 120 }),
   })
   const data = await res.json()
   return data.text ?? ''
@@ -72,6 +78,7 @@ export default function Chat({ chats, setChats }) {
   const navigate = useNavigate()
   const location = useLocation()
   const openerText = location.state?.opener
+  const fromNudge = location.state?.fromNudge ?? false
 
   const existing = chats[numId]
   const initMessages = existing ?? (openerText
@@ -97,7 +104,7 @@ export default function Chat({ chats, setChats }) {
     if (!openerText || existing) return
     const show = setTimeout(() => {
       setThinking(true)
-      getKellyReply([{ from: 'me', text: openerText, time: now() }]).then(text => {
+      getKellyReply([{ from: 'me', text: openerText, time: now() }], fromNudge).then(text => {
         if (!text) return
         setMessages(prev => [...prev, { from: 'them', text, time: now() }])
         setThinking(false)
@@ -115,7 +122,7 @@ export default function Chat({ chats, setChats }) {
     setMessages(updated)
     setInput('')
     setThinking(true)
-    const reply = await getKellyReply(updated).catch(() => '')
+    const reply = await getKellyReply(updated, fromNudge).catch(() => '')
     if (reply) setMessages(prev => [...prev, { from: 'them', text: reply, time: now() }])
     setThinking(false)
   }

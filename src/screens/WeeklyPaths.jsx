@@ -10,7 +10,7 @@ const ChevronRight = () => (
   </svg>
 )
 
-export default function WeeklyPaths() {
+export default function WeeklyPaths({ openToday, setOpenToday }) {
   const navigate = useNavigate()
   const [paused, setPaused] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
@@ -112,7 +112,7 @@ export default function WeeklyPaths() {
         </div>
 
         {/* Tracking status */}
-        <div className="px-5 mt-4 mb-6">
+        <div className="px-5 mt-4 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{
             display: 'flex', alignItems: 'center', gap: 8,
             background: '#EDEDE9', borderRadius: 12, padding: '10px 14px',
@@ -132,6 +132,26 @@ export default function WeeklyPaths() {
               {paused ? 'Resume' : 'Pause'}
             </button>
           </div>
+          <button
+            onClick={() => setOpenToday(v => !v)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              background: '#EDEDE9', borderRadius: 12, padding: '10px 14px',
+              border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left',
+              width: '100%',
+            }}
+          >
+            <span style={{
+              width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
+              background: openToday ? '#34D399' : '#D6CCC2',
+            }} />
+            <p style={{ fontSize: 12, color: '#6B5C55', fontWeight: 500, flex: 1 }}>
+              Open today
+            </p>
+            <span style={{ fontSize: 12, fontWeight: 600, color: openToday ? '#16112B' : '#9B8C84' }}>
+              {openToday ? '✓' : '○'}
+            </span>
+          </button>
         </div>
       </div>
 
