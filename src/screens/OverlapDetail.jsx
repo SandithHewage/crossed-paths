@@ -199,11 +199,14 @@ export default function OverlapDetail({ appState, setAppState }) {
             >
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                 <div style={{ position: 'relative', width: 96, height: 56 }}>
-                  <div style={{
-                    position: 'absolute', left: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
-                    background: '#D5BDAF', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 16, fontWeight: 700, color: '#16112B',
-                  }}>So</div>
+                  <img
+                    src="/kitty.png"
+                    alt="Sophie"
+                    style={{
+                      position: 'absolute', left: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
+                      objectFit: 'cover', border: '2px solid #F5EBE0',
+                    }}
+                  />
                   <img
                     src="/bear.png"
                     alt={person.name}
