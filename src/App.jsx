@@ -20,7 +20,7 @@ export default function App() {
     if (openToday && appState.connected?.[1] && !nudge.active) {
       const timer = setTimeout(() => {
         setNudge({ active: true, personId: 1, phase: 'nudge' })
-      }, 3000)
+      }, 4000)
       return () => clearTimeout(timer)
     }
   }, [openToday, appState.connected?.[1]]) // eslint-disable-line
