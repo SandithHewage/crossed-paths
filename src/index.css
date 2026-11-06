@@ -51,10 +51,10 @@ body {
 }
 
 .pulse-fast {
-  animation: pulse 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-dot 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes pulse {
+@keyframes pulse-dot {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.2; }
 }

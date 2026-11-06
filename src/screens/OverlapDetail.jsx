@@ -204,22 +204,14 @@ export default function OverlapDetail({ appState, setAppState }) {
                     background: '#D5BDAF', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 16, fontWeight: 700, color: '#16112B',
                   }}>So</div>
-                  {person.profileImage ? (
-                    <img
-                      src={person.profileImage}
-                      alt={person.name}
-                      style={{
-                        position: 'absolute', right: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
-                        objectFit: 'cover', border: '2px solid #F5EBE0',
-                      }}
-                    />
-                  ) : (
-                    <div style={{
+                  <img
+                    src="/bear.png"
+                    alt={person.name}
+                    style={{
                       position: 'absolute', right: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
-                      background: person.avatarBg, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 28, opacity: 0.9,
-                    }}>😊</div>
-                  )}
+                      objectFit: 'cover', border: '2px solid #F5EBE0',
+                    }}
+                  />
                 </div>
               </div>
 

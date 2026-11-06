@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { people } from '../data/people'
 import BottomNav from '../components/BottomNav'
@@ -13,6 +13,7 @@ const ChevronRight = () => (
 export default function WeeklyPaths() {
   const navigate = useNavigate()
   const [paused, setPaused] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0' }}>
@@ -28,14 +29,16 @@ export default function WeeklyPaths() {
               Your Paths
             </h2>
           </div>
-          <div style={{
-            width: 36, height: 36, borderRadius: '50%',
-            background: '#D5BDAF',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 13, fontWeight: 700, color: '#16112B',
-          }}>
-            S
-          </div>
+          <button
+            onClick={() => setShowProfile(true)}
+            style={{
+              width: 48, height: 48, borderRadius: '50%',
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              padding: 0, overflow: 'hidden',
+            }}
+          >
+            <img src="/kitty.png" alt="Sophie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </button>
         </div>
 
         {/* Stats */}
@@ -131,6 +134,35 @@ export default function WeeklyPaths() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showProfile && (
+          <motion.div
+            initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
+            onClick={() => setShowProfile(false)}
+            style={{
+              position: 'fixed', bottom: 0, left: 0, right: 0,
+              background: 'rgba(44,35,32,0.35)', zIndex: 20,
+              display: 'flex', alignItems: 'flex-end',
+            }}
+          >
+            <motion.div
+              onClick={e => e.stopPropagation()}
+              style={{
+                width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0',
+                padding: '32px 24px 40px', display: 'flex', flexDirection: 'column', alignItems: 'center',
+              }}
+            >
+              <img src="/kitty.png" alt="Sophie" style={{
+                width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', marginBottom: 20,
+              }} />
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', marginBottom: 4 }}>Sophie</p>
+              <p style={{ fontSize: 13, color: '#9B8C84' }}>You</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <BottomNav />
     </div>

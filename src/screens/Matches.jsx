@@ -50,24 +50,14 @@ export default function Matches({ appState }) {
                   border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left',
                 }}
               >
-                {person.profileImage ? (
-                  <img
-                    src={person.profileImage}
-                    alt={person.name}
-                    style={{
-                      width: 40, height: 40, borderRadius: '50%',
-                      objectFit: 'cover', flexShrink: 0, border: '1px solid #D6CCC2',
-                    }}
-                  />
-                ) : (
-                  <div style={{
-                    width: 40, height: 40, borderRadius: '50%', background: person.avatarBg,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 20, flexShrink: 0,
-                  }}>
-                    😊
-                  </div>
-                )}
+                <img
+                  src="/bear.png"
+                  alt={person.name}
+                  style={{
+                    width: 40, height: 40, borderRadius: '50%',
+                    objectFit: 'cover', flexShrink: 0, border: '1px solid #D6CCC2',
+                  }}
+                />
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B' }}>{person.name}</p>
                   <p style={{ fontSize: 12, color: '#9B8C84' }}>{person.major} · {person.year}</p>
