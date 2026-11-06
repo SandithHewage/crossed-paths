@@ -137,18 +137,18 @@ export default function WeeklyPaths() {
 
       <AnimatePresence>
         {showProfile && (
-          <motion.div
-            initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-            transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
+          <div
             onClick={() => setShowProfile(false)}
             style={{
-              position: 'fixed', bottom: 0, left: 0, right: 0,
+              position: 'fixed', inset: 0,
               background: 'rgba(44,35,32,0.35)', zIndex: 20,
               display: 'flex', alignItems: 'flex-end',
             }}
           >
             <motion.div
               onClick={e => e.stopPropagation()}
+              initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
+              transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
               style={{
                 width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0',
                 padding: '32px 24px 40px', display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -160,7 +160,7 @@ export default function WeeklyPaths() {
               <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', marginBottom: 4 }}>Sophie</p>
               <p style={{ fontSize: 13, color: '#9B8C84' }}>You</p>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
