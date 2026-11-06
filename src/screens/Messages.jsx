@@ -50,7 +50,7 @@ export default function Messages({ appState, chats }) {
                     alt={person.name}
                     style={{
                       width: 42, height: 42, borderRadius: '50%',
-                      objectFit: 'cover', flexShrink: 0, border: '1px solid #D6CCC2',
+                      objectFit: 'cover', flexShrink: 0, border: '2px solid #C9906E',
                     }}
                   />
                   <div style={{ flex: 1, minWidth: 0 }}>

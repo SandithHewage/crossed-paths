@@ -33,7 +33,7 @@ export default function WeeklyPaths() {
             onClick={() => setShowProfile(true)}
             style={{
               width: 48, height: 48, borderRadius: '50%',
-              background: 'transparent', border: 'none', cursor: 'pointer',
+              background: 'transparent', border: '2px solid #D4A574', cursor: 'pointer',
               padding: 0, overflow: 'hidden',
             }}
           >
@@ -156,6 +156,7 @@ export default function WeeklyPaths() {
             >
               <img src="/kitty.png" alt="Sophie" style={{
                 width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', marginBottom: 20,
+                border: '3px solid #D4A574',
               }} />
               <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', marginBottom: 4 }}>Sophie</p>
               <p style={{ fontSize: 13, color: '#9B8C84' }}>You</p>

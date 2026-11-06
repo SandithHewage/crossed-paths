@@ -139,7 +139,7 @@ export default function Chat({ chats, setChats }) {
           alt={person.name}
           style={{
             width: 34, height: 34, borderRadius: '50%',
-            objectFit: 'cover', border: '1px solid #D6CCC2',
+            objectFit: 'cover', border: '2px solid #C9906E',
           }}
         />
         <div style={{ flex: 1 }}>

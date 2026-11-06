@@ -204,7 +204,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                     alt="Sophie"
                     style={{
                       position: 'absolute', left: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
-                      objectFit: 'cover', border: '2px solid #F5EBE0',
+                      objectFit: 'cover', border: '2px solid #D4A574',
                     }}
                   />
                   <img
@@ -212,7 +212,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                     alt={person.name}
                     style={{
                       position: 'absolute', right: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
-                      objectFit: 'cover', border: '2px solid #F5EBE0',
+                      objectFit: 'cover', border: '2px solid #C9906E',
                     }}
                   />
                 </div>

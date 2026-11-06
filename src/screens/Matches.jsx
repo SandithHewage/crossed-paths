@@ -55,7 +55,7 @@ export default function Matches({ appState }) {
                   alt={person.name}
                   style={{
                     width: 40, height: 40, borderRadius: '50%',
-                    objectFit: 'cover', flexShrink: 0, border: '1px solid #D6CCC2',
+                    objectFit: 'cover', flexShrink: 0, border: '2px solid #C9906E',
                   }}
                 />
                 <div style={{ flex: 1 }}>
