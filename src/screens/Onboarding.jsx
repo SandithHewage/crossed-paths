@@ -49,6 +49,8 @@ const features = [
 ]
 
 function PhoneScreen({ onContinue }) {
+  const [mode, setMode] = useState('email') // 'email' or 'phone'
+  const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
 
   const formatted = (val) => {
@@ -58,8 +60,10 @@ function PhoneScreen({ onContinue }) {
     return `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`
   }
 
-  const handleChange = (e) => setPhone(formatted(e.target.value))
+  const handlePhoneChange = (e) => setPhone(formatted(e.target.value))
   const digits = phone.replace(/\D/g, '')
+  const isValidEmail = email.includes('@') && email.includes('.')
+  const isValidPhone = digits.length === 10
 
   return (
     <div className="flex-1 flex flex-col justify-between px-6 pb-8 pt-4">
@@ -106,40 +110,81 @@ function PhoneScreen({ onContinue }) {
         transition={{ delay: 0.32, duration: 0.4 }}
         className="flex flex-col gap-3"
       >
-        <div style={{ position: 'relative' }}>
-          <span style={{
-            position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)',
-            fontSize: 15, color: '#16112B', fontWeight: 500, pointerEvents: 'none',
-          }}>+1</span>
-          <input
-            type="tel"
-            value={phone}
-            onChange={handleChange}
-            placeholder="(555) 000-0000"
-            style={{
-              width: '100%', padding: '15px 16px 15px 42px', borderRadius: 14,
-              background: '#EDEDE9', border: '1.5px solid #D6CCC2',
-              fontSize: 15, color: '#16112B', fontWeight: 500,
-              outline: 'none', boxSizing: 'border-box',
-            }}
-          />
-        </div>
+        <AnimatePresence mode="wait">
+          {mode === 'email' ? (
+            <motion.div key="email"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@ucsd.edu"
+                style={{
+                  width: '100%', padding: '15px 16px', borderRadius: 14,
+                  background: '#EDEDE9', border: '1.5px solid #D6CCC2',
+                  fontSize: 15, color: '#16112B', fontWeight: 500,
+                  outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+            </motion.div>
+          ) : (
+            <motion.div key="phone"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ position: 'relative' }}
+            >
+              <span style={{
+                position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)',
+                fontSize: 15, color: '#16112B', fontWeight: 500, pointerEvents: 'none',
+              }}>+1</span>
+              <input
+                type="tel"
+                value={phone}
+                onChange={handlePhoneChange}
+                placeholder="(555) 000-0000"
+                style={{
+                  width: '100%', padding: '15px 16px 15px 42px', borderRadius: 14,
+                  background: '#EDEDE9', border: '1.5px solid #D6CCC2',
+                  fontSize: 15, color: '#16112B', fontWeight: 500,
+                  outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <button
-          onClick={() => digits.length === 10 && onContinue()}
+          onClick={() => (mode === 'email' ? isValidEmail : isValidPhone) && onContinue()}
           style={{
             width: '100%', padding: '15px 0', borderRadius: 14,
-            background: digits.length === 10 ? '#D5BDAF' : '#E3D5CA',
+            background: (mode === 'email' ? isValidEmail : isValidPhone) ? '#D5BDAF' : '#E3D5CA',
             color: '#16112B', fontSize: 15, fontWeight: 600,
             letterSpacing: '-0.1px', border: '1px solid #D6CCC2',
-            cursor: digits.length === 10 ? 'pointer' : 'default',
+            cursor: (mode === 'email' ? isValidEmail : isValidPhone) ? 'pointer' : 'default',
             transition: 'background 0.2s',
           }}
         >
-          Continue with phone number
+          {mode === 'email' ? 'Verify with UCSD email' : 'Continue with phone number'}
         </button>
+
         <p style={{ textAlign: 'center', fontSize: 12, color: '#9B8C84', lineHeight: 1.5 }}>
-          We'll send a verification code. Your phone number<br />will never be shared with others.
+          {mode === 'email'
+            ? 'We'll send a verification link to confirm you're part of UCSD'
+            : "We'll send a verification code. Your phone number will never be shared."}
         </p>
+
+        <button
+          onClick={() => setMode(mode === 'email' ? 'phone' : 'email')}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: '#9B8C84', fontSize: 13, textDecoration: 'underline',
+            padding: 0, marginTop: 4,
+          }}
+        >
+          {mode === 'email' ? 'Continue with phone number instead' : 'Use UCSD email instead'}
+        </button>
       </motion.div>
     </div>
   )
