@@ -20,7 +20,7 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
       <div className="flex-1 overflow-y-auto scrollable">
 
         {/* Header */}
-        <div className="px-5 pt-5 pb-1 flex items-center justify-between">
+        <div className="px-5 pt-5 pb-1 flex items-start justify-between">
           <div>
             <p style={{ fontSize: 11, fontWeight: 600, color: '#9B8C84', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               This past week
@@ -29,16 +29,36 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
               Your Paths
             </h2>
           </div>
-          <button
-            onClick={() => setShowProfile(true)}
-            style={{
-              width: 48, height: 48, borderRadius: '50%',
-              background: 'transparent', border: '2px solid #D4A574', cursor: 'pointer',
-              padding: 0, overflow: 'hidden',
-            }}
-          >
-            <img src="/kitty.png" alt="Sophie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
+            <button
+              onClick={() => setShowProfile(true)}
+              style={{
+                width: 48, height: 48, borderRadius: '50%',
+                background: 'transparent', border: '2px solid #D4A574', cursor: 'pointer',
+                padding: 0, overflow: 'hidden', flexShrink: 0,
+              }}
+            >
+              <img src="/kitty.png" alt="Sophie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </button>
+            <button
+              onClick={() => setOpenToday(v => !v)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 5,
+                background: openToday ? '#D5BDAF' : '#EDEDE9',
+                borderRadius: 999, padding: '5px 10px',
+                border: `1px solid ${openToday ? '#C9A99A' : '#D6CCC2'}`,
+                cursor: 'pointer',
+              }}
+            >
+              <span style={{
+                width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+                background: openToday ? '#16112B' : '#D6CCC2',
+              }} />
+              <span style={{ fontSize: 11.5, fontWeight: 600, color: openToday ? '#16112B' : '#9B8C84', whiteSpace: 'nowrap' }}>
+                Up for saying hi
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -112,7 +132,7 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
         </div>
 
         {/* Tracking status */}
-        <div className="px-5 mt-4 mb-6" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="px-5 mt-4 mb-6">
           <div style={{
             display: 'flex', alignItems: 'center', gap: 8,
             background: '#EDEDE9', borderRadius: 12, padding: '10px 14px',
@@ -132,26 +152,6 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
               {paused ? 'Resume' : 'Pause'}
             </button>
           </div>
-          <button
-            onClick={() => setOpenToday(v => !v)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 8,
-              background: '#EDEDE9', borderRadius: 12, padding: '10px 14px',
-              border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left',
-              width: '100%',
-            }}
-          >
-            <span style={{
-              width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
-              background: openToday ? '#34D399' : '#D6CCC2',
-            }} />
-            <p style={{ fontSize: 12, color: '#6B5C55', fontWeight: 500, flex: 1 }}>
-              Open today
-            </p>
-            <span style={{ fontSize: 12, fontWeight: 600, color: openToday ? '#16112B' : '#9B8C84' }}>
-              {openToday ? '✓' : '○'}
-            </span>
-          </button>
         </div>
       </div>
 
