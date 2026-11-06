@@ -235,9 +235,9 @@ export default function OverlapDetail({ appState, setAppState }) {
                   onChange={e => setOpener(e.target.value)}
                   style={{
                     width: '100%', fontSize: 13.5, color: '#16112B', lineHeight: 1.5,
-                    background: 'transparent', border: 'none', borderBottom: '1px solid #D6CCC2',
+                    background: 'transparent', border: 'none',
                     outline: 'none', resize: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-                    minHeight: 56, paddingBottom: 4,
+                    minHeight: 56,
                   }}
                 />
               </div>
