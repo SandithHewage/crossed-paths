@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useParams } from 'react-router-dom'
 import { people } from '../data/people'
@@ -40,6 +40,14 @@ export default function OverlapDetail({ appState, setAppState }) {
   const [connected, setConnected] = useState(appState?.connected?.[person?.id])
   const [showMatch, setShowMatch] = useState(false)
   const [opener, setOpener] = useState("hey! i think i've seen you around geisel a few times lol, glad we matched")
+  const textareaRef = useRef(null)
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+    }
+  }, [opener])
 
   if (!person) return null
 
@@ -231,13 +239,14 @@ export default function OverlapDetail({ appState, setAppState }) {
               <div style={{ background: '#EDEDE9', borderRadius: 12, padding: '12px 14px', marginBottom: 18, border: '1px solid #D6CCC2' }}>
                 <p style={{ fontSize: 11, fontWeight: 600, color: '#9B8C84', marginBottom: 6 }}>Suggested opener</p>
                 <textarea
+                  ref={textareaRef}
                   value={opener}
                   onChange={e => setOpener(e.target.value)}
                   style={{
                     width: '100%', fontSize: 13.5, color: '#16112B', lineHeight: 1.5,
                     background: 'transparent', border: 'none',
                     outline: 'none', resize: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-                    minHeight: 56,
+                    overflow: 'hidden',
                   }}
                 />
               </div>
