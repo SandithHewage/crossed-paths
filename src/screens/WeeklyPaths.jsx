@@ -10,12 +10,6 @@ const ChevronRight = () => (
   </svg>
 )
 
-const getScoreColor = (score) => {
-  if (score <= 33) return '#FFB3BA' // pastel red
-  if (score <= 66) return '#FFFF99' // pastel yellow
-  return '#C1FFC1' // pastel green
-}
-
 export default function WeeklyPaths() {
   const navigate = useNavigate()
   const [paused, setPaused] = useState(false)
@@ -108,7 +102,6 @@ export default function WeeklyPaths() {
                 <span style={{
                   fontSize: 12, fontWeight: 700, color: '#16112B',
                   background: '#E3D5CA', padding: '2px 8px', borderRadius: 999,
-                  ...(person.id === 1 && { border: `2px solid ${getScoreColor(person.score)}` }),
                 }}>
                   {person.score}
                 </span>
