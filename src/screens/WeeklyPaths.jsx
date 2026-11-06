@@ -108,7 +108,7 @@ export default function WeeklyPaths() {
                 <span style={{
                   fontSize: 12, fontWeight: 700, color: '#16112B',
                   background: '#E3D5CA', padding: '2px 8px', borderRadius: 999,
-                  border: `2px solid ${getScoreColor(person.score)}`,
+                  ...(person.id === 1 && { border: `2px solid ${getScoreColor(person.score)}` }),
                 }}>
                   {person.score}
                 </span>
