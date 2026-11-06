@@ -55,7 +55,7 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
                 background: openToday ? '#16112B' : '#D6CCC2',
               }} />
               <span style={{ fontSize: 11.5, fontWeight: 600, color: openToday ? '#16112B' : '#9B8C84', whiteSpace: 'nowrap' }}>
-                Up for saying hi
+                Free to meet
               </span>
             </button>
           </div>
