@@ -62,7 +62,7 @@ function PhoneScreen({ onContinue }) {
 
   const handlePhoneChange = (e) => setPhone(formatted(e.target.value))
   const digits = phone.replace(/\D/g, '')
-  const isValidEmail = email.includes('@') && email.includes('.')
+  const isValidEmail = email.endsWith('@ucsd.edu') && email.split('@')[0].length > 0
   const isValidPhone = digits.length === 10
 
   return (
