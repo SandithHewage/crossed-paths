@@ -171,7 +171,7 @@ function PhoneScreen({ onContinue }) {
 
         <p style={{ textAlign: 'center', fontSize: 12, color: '#9B8C84', lineHeight: 1.5 }}>
           {mode === 'email'
-            ? 'We'll send a verification link to confirm you're part of UCSD'
+            ? "We'll send a verification link to confirm you're part of UCSD"
             : "We'll send a verification code. Your phone number will never be shared."}
         </p>
 
