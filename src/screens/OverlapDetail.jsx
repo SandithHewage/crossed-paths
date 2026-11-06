@@ -54,7 +54,7 @@ export default function OverlapDetail({ appState, setAppState }) {
   const sched = person.score - freq - cons
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0', position: 'relative' }}>
+    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0', position: 'relative', zIndex: 0 }}>
       <div className="flex-1 overflow-y-auto scrollable">
 
         <div className="flex items-center gap-3 px-5 pt-5 pb-3">
