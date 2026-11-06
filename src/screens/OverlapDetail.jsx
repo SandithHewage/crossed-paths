@@ -154,7 +154,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                 background: '#D5BDAF', color: '#16112B',
                 fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
               }}>
-                Message {person.name}
+                Message Kelly
               </button>
             ) : (
               <div style={{
@@ -203,7 +203,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                     position: 'absolute', left: 0, top: 0, width: 56, height: 56, borderRadius: '50%',
                     background: '#D5BDAF', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 16, fontWeight: 700, color: '#16112B',
-                  }}>S</div>
+                  }}>So</div>
                   {person.profileImage ? (
                     <img
                       src={person.profileImage}
@@ -227,7 +227,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                 It's a match
               </p>
               <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 700, color: '#16112B', letterSpacing: '-0.3px', marginBottom: 4 }}>
-                Meet {person.name}
+                Meet Kelly
               </h2>
               <p style={{ textAlign: 'center', fontSize: 13, color: '#9B8C84', marginBottom: 18 }}>
                 {person.major} · {person.year}

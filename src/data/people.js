@@ -1,8 +1,8 @@
 export const people = [
   {
     id: 1,
-    initials: 'HL',
-    name: 'Hannah L.',
+    initials: 'KL',
+    name: 'Kelly Lin',
     major: 'Cog Sci Neuroscience',
     year: '4th year',
     crossCount: 11,
