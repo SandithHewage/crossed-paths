@@ -1,10 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 import { people } from '../data/people'
 
-export default function NearbyNudge({ nudge, setNudge, addLog }) {
-  const navigate = useNavigate()
-
+export default function NearbyNudge({ nudge, setNudge }) {
   if (!nudge.active) return null
 
   const person = people.find(p => p.id === nudge.personId)
@@ -14,12 +11,10 @@ export default function NearbyNudge({ nudge, setNudge, addLog }) {
   const contextLine = `Ask if they're heading to ${person.overlaps[0]?.location ?? 'campus'}`
 
   function dismiss() {
-    addLog('nudge_dismissed', nudge.personId)
     setNudge({ active: false, personId: null, phase: 'nudge' })
   }
 
   function acceptNudge() {
-    addLog('nudge_accepted', nudge.personId)
     setNudge(prev => ({ ...prev, phase: 'inperson' }))
   }
 
@@ -27,8 +22,7 @@ export default function NearbyNudge({ nudge, setNudge, addLog }) {
     setNudge(prev => ({ ...prev, phase: 'followup' }))
   }
 
-  function resolveFollowup(event) {
-    addLog(event, nudge.personId)
+  function resolveFollowup() {
     setNudge({ active: false, personId: null, phase: 'nudge' })
   }
 
@@ -56,10 +50,10 @@ export default function NearbyNudge({ nudge, setNudge, addLog }) {
         {nudge.phase === 'nudge' && (
           <>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-              <div style={{
+              <span style={{
                 width: 10, height: 10, borderRadius: '50%', background: '#34D399', flexShrink: 0,
-                animation: 'pulse 1.5s ease-in-out infinite',
-              }} />
+                display: 'inline-block',
+              }} className="animate-pulse" />
               <p style={{ fontSize: 14, fontWeight: 700, color: '#16112B', flex: 1 }}>
                 {person.name} is nearby · {zone}
               </p>
@@ -123,7 +117,7 @@ export default function NearbyNudge({ nudge, setNudge, addLog }) {
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <button
-                onClick={() => resolveFollowup('met')}
+                onClick={resolveFollowup}
                 style={{
                   width: '100%', padding: '11px 0', borderRadius: 12,
                   background: '#D5BDAF', color: '#16112B',
@@ -134,7 +128,7 @@ export default function NearbyNudge({ nudge, setNudge, addLog }) {
               </button>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button
-                  onClick={() => resolveFollowup('not_today')}
+                  onClick={resolveFollowup}
                   style={{
                     flex: 1, padding: '10px 0', borderRadius: 12,
                     background: '#F5EBE0', color: '#6B5C55',
@@ -144,7 +138,7 @@ export default function NearbyNudge({ nudge, setNudge, addLog }) {
                   Not today
                 </button>
                 <button
-                  onClick={() => resolveFollowup('missed')}
+                  onClick={resolveFollowup}
                   style={{
                     flex: 1, padding: '10px 0', borderRadius: 12,
                     background: '#F5EBE0', color: '#6B5C55',
