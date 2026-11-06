@@ -13,13 +13,13 @@ export default function App() {
   const [appState, setAppState] = useState({ connected: {} })
   const [chats, setChats] = useState({})
   const [openToday, setOpenToday] = useState(false)
-  const [nudge, setNudge] = useState({ active: false, personId: null, phase: 'nudge' })
+  const [nudge, setNudge] = useState({ active: false, personId: null })
 
   // Auto-trigger nudge when Kelly connects back and Sophie is open today
   useEffect(() => {
-    if (openToday && appState.connected?.[1] && !nudge.active) {
+    if (openToday && appState.connected?.[1] && !nudge.active) { // eslint-disable-line
       const timer = setTimeout(() => {
-        setNudge({ active: true, personId: 1, phase: 'nudge' })
+        setNudge({ active: true, personId: 1 })
       }, 4000)
       return () => clearTimeout(timer)
     }
