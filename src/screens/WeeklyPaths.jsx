@@ -20,7 +20,7 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
       <div className="flex-1 overflow-y-auto scrollable">
 
         {/* Header */}
-        <div className="px-5 pt-5 pb-1 flex items-start justify-between">
+        <div className="px-5 pt-5 pb-1 flex items-center justify-between">
           <div>
             <p style={{ fontSize: 11, fontWeight: 600, color: '#9B8C84', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               This past week
@@ -29,36 +29,16 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
               Your Paths
             </h2>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-            <button
-              onClick={() => setShowProfile(true)}
-              style={{
-                width: 48, height: 48, borderRadius: '50%',
-                background: 'transparent', border: '2px solid #D4A574', cursor: 'pointer',
-                padding: 0, overflow: 'hidden', flexShrink: 0,
-              }}
-            >
-              <img src="/kitty.png" alt="Sophie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </button>
-            <button
-              onClick={() => setOpenToday(v => !v)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 5,
-                background: openToday ? '#D5BDAF' : '#EDEDE9',
-                borderRadius: 999, padding: '5px 10px',
-                border: `1px solid ${openToday ? '#C9A99A' : '#D6CCC2'}`,
-                cursor: 'pointer',
-              }}
-            >
-              <span style={{
-                width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                background: openToday ? '#16112B' : '#D6CCC2',
-              }} />
-              <span style={{ fontSize: 11.5, fontWeight: 600, color: openToday ? '#16112B' : '#9B8C84', whiteSpace: 'nowrap' }}>
-                Free to meet
-              </span>
-            </button>
-          </div>
+          <button
+            onClick={() => setShowProfile(true)}
+            style={{
+              width: 48, height: 48, borderRadius: '50%',
+              background: 'transparent', border: '2px solid #D4A574', cursor: 'pointer',
+              padding: 0, overflow: 'hidden',
+            }}
+          >
+            <img src="/kitty.png" alt="Sophie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </button>
         </div>
 
         {/* Stats */}
@@ -131,28 +111,7 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
           ))}
         </div>
 
-        {/* Tracking status */}
-        <div className="px-5 mt-4 mb-6">
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            background: '#EDEDE9', borderRadius: 12, padding: '10px 14px',
-            border: '1px solid #D6CCC2',
-          }}>
-            <span style={{
-              width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
-              background: paused ? '#FBBF24' : '#34D399',
-            }} className={paused ? 'pulse-fast' : 'animate-pulse'} />
-            <p style={{ fontSize: 12, color: '#6B5C55', fontWeight: 500, flex: 1 }}>
-              {paused ? 'Tracking paused · UCSD campus' : 'Tracking active · UCSD campus'}
-            </p>
-            <button
-              onClick={() => setPaused(p => !p)}
-              style={{ fontSize: 12, color: '#9B8C84', background: 'none', border: 'none', cursor: 'pointer' }}
-            >
-              {paused ? 'Resume' : 'Pause'}
-            </button>
-          </div>
-        </div>
+        <div className="mb-6" />
       </div>
 
       <AnimatePresence>
@@ -175,11 +134,59 @@ export default function WeeklyPaths({ openToday, setOpenToday }) {
               }}
             >
               <img src="/kitty.png" alt="Sophie" style={{
-                width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', marginBottom: 20,
+                width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', marginBottom: 16,
                 border: '3px solid #D4A574',
               }} />
-              <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', marginBottom: 4 }}>Sophie</p>
-              <p style={{ fontSize: 13, color: '#9B8C84' }}>You</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', marginBottom: 2 }}>Sophie</p>
+              <p style={{ fontSize: 13, color: '#9B8C84', marginBottom: 24 }}>You</p>
+
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {/* Free to meet toggle */}
+                <button
+                  onClick={() => setOpenToday(v => !v)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    background: '#EDEDE9', borderRadius: 14, padding: '12px 16px',
+                    border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left', width: '100%',
+                  }}
+                >
+                  <span style={{
+                    width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
+                    background: openToday ? '#34D399' : '#D6CCC2',
+                  }} />
+                  <p style={{ fontSize: 13, color: '#16112B', fontWeight: 500, flex: 1 }}>Free to meet</p>
+                  <span style={{
+                    fontSize: 12, fontWeight: 600,
+                    color: openToday ? '#065F46' : '#9B8C84',
+                    background: openToday ? '#D1FAE5' : '#E3D5CA',
+                    padding: '3px 10px', borderRadius: 999,
+                    border: `1px solid ${openToday ? '#A7F3D0' : '#D6CCC2'}`,
+                  }}>
+                    {openToday ? 'On' : 'Off'}
+                  </span>
+                </button>
+
+                {/* Tracking status */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  background: '#EDEDE9', borderRadius: 14, padding: '12px 16px',
+                  border: '1px solid #D6CCC2',
+                }}>
+                  <span style={{
+                    width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
+                    background: paused ? '#FBBF24' : '#34D399',
+                  }} className={paused ? 'pulse-fast' : 'animate-pulse'} />
+                  <p style={{ fontSize: 13, color: '#16112B', fontWeight: 500, flex: 1 }}>
+                    {paused ? 'Tracking paused' : 'Tracking live'} · UCSD campus
+                  </p>
+                  <button
+                    onClick={() => setPaused(p => !p)}
+                    style={{ fontSize: 12, color: '#9B8C84', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}
+                  >
+                    {paused ? 'Resume' : 'Pause'}
+                  </button>
+                </div>
+              </div>
             </motion.div>
           </div>
         )}
