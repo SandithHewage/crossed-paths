@@ -16,7 +16,7 @@ export default function WeeklyPaths() {
   const [showProfile, setShowProfile] = useState(false)
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0' }}>
+    <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0', position: 'relative' }}>
       <div className="flex-1 overflow-y-auto scrollable">
 
         {/* Header */}
@@ -140,7 +140,7 @@ export default function WeeklyPaths() {
           <div
             onClick={() => setShowProfile(false)}
             style={{
-              position: 'fixed', inset: 0,
+              position: 'absolute', inset: 0,
               background: 'rgba(44,35,32,0.35)', zIndex: 20,
               display: 'flex', alignItems: 'flex-end',
             }}
