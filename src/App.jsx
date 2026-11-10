@@ -58,7 +58,7 @@ export default function App() {
             <Route path="/" element={<Navigate to="/onboarding" replace />} />
             <Route path="/onboarding" element={<FadeIn><Onboarding /></FadeIn>} />
             <Route path="/weekly" element={<FadeIn><WeeklyPaths openToday={openToday} setOpenToday={setOpenToday} zone={zone} setZone={setZone} /></FadeIn>} />
-            <Route path="/overlap/:id" element={<FadeIn><OverlapDetail appState={appState} setAppState={setAppState} openToday={openToday} /></FadeIn>} />
+            <Route path="/overlap/:id" element={<FadeIn><OverlapDetail appState={appState} setAppState={setAppState} /></FadeIn>} />
             <Route path="/matches" element={<FadeIn><Matches appState={appState} /></FadeIn>} />
             <Route path="/messages" element={<FadeIn><Messages appState={appState} chats={chats} /></FadeIn>} />
             <Route path="/chat/:id" element={<FadeIn><Chat chats={chats} setChats={setChats} /></FadeIn>} />
