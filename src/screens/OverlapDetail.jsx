@@ -33,7 +33,7 @@ const BackIcon = () => (
   </svg>
 )
 
-export default function OverlapDetail({ appState, setAppState }) {
+export default function OverlapDetail({ appState, setAppState, openToday }) {
   const { id } = useParams()
   const person = people.find(p => p.id === Number(id))
   const navigate = useNavigate()
@@ -252,16 +252,18 @@ export default function OverlapDetail({ appState, setAppState }) {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <button
-                  onClick={() => { setShowMatch(false); navigate('/chat/1', { state: { opener, fromNudge: false } }) }}
-                  style={{
-                    width: '100%', padding: '13px 0', borderRadius: 12,
-                    background: '#D5BDAF', color: '#16112B',
-                    fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
-                  }}
-                >
-                  See where to meet
-                </button>
+                {openToday && (
+                  <button
+                    onClick={() => { setShowMatch(false); navigate('/weekly') }}
+                    style={{
+                      width: '100%', padding: '13px 0', borderRadius: 12,
+                      background: '#D5BDAF', color: '#16112B',
+                      fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
+                    }}
+                  >
+                    See where to meet
+                  </button>
+                )}
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button
                     onClick={() => { setShowMatch(false); navigate('/chat/1', { state: { opener, fromNudge: false } }) }}

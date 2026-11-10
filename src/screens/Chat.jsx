@@ -47,25 +47,40 @@ const KELLY_NUDGE_ADDENDUM = `
 
 Context: you just got a nudge that this person said hi to you nearby on campus. They already came up to you IRL. Keep it warm and brief — you already met. Say something like 'oh that was you! lol' or 'glad you said hi'. Do NOT suggest studying — you already made a plan in person. End with 'see you soon' naturally.`
 
+const KELLY_SAYS_FIRST_ADDENDUM = `
+
+Context: someone from the app just came up to you IRL and said hi. You haven't texted yet — open the conversation. One warm, brief sentence acknowledging you just met. No emojis.`
+
+const KELLY_MISSED_ADDENDUM = `
+
+Context: someone from the app was nearby and tried to find you but missed you. They're texting now. Be warm and a little playful about it.`
+
 function now() {
   return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
 }
 
 const delay = () => new Promise(r => setTimeout(r, 2000 + Math.random() * 1000))
 
-async function getKellyReply(history, fromNudge = false) {
+async function getKellyReply(history, fromNudge = false, outcome = null) {
   const messages = history.map(m => ({
     role: m.from === 'me' ? 'user' : 'assistant',
-    text: m.text,
-  })).map(({ role, text }) => ({ role, content: text }))
+    content: m.text,
+  }))
 
-  const system = fromNudge ? KELLY_SYSTEM + KELLY_NUDGE_ADDENDUM : KELLY_SYSTEM
+  let system = KELLY_SYSTEM
+  if (fromNudge && outcome === 'said_hi') system += KELLY_NUDGE_ADDENDUM
+  else if (fromNudge && outcome === 'missed') system += KELLY_MISSED_ADDENDUM
+  else if (fromNudge) system += KELLY_SAYS_FIRST_ADDENDUM
+
+  const payload = messages.length === 0
+    ? [{ role: 'user', content: '.' }]
+    : messages
 
   await delay()
   const res = await fetch(WORKER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system, messages, max_tokens: 120 }),
+    body: JSON.stringify({ system, messages: payload, max_tokens: 120 }),
   })
   const data = await res.json()
   return data.text ?? ''
@@ -79,6 +94,7 @@ export default function Chat({ chats, setChats }) {
   const location = useLocation()
   const openerText = location.state?.opener
   const fromNudge = location.state?.fromNudge ?? false
+  const outcome = location.state?.outcome ?? null
 
   const existing = chats[numId]
   const initMessages = existing ?? (openerText
@@ -104,13 +120,27 @@ export default function Chat({ chats, setChats }) {
     if (!openerText || existing) return
     const show = setTimeout(() => {
       setThinking(true)
-      getKellyReply([{ from: 'me', text: openerText, time: now() }], fromNudge).then(text => {
+      getKellyReply([{ from: 'me', text: openerText, time: now() }], fromNudge, outcome).then(text => {
         if (!text) return
         setMessages(prev => [...prev, { from: 'them', text, time: now() }])
         setThinking(false)
       }).catch(() => setThinking(false))
     }, 1500)
     return () => clearTimeout(show)
+  }, []) // eslint-disable-line
+
+  // Kelly speaks first when fromNudge, no opener, no existing chat
+  useEffect(() => {
+    if (!fromNudge || openerText || existing) return
+    const t = setTimeout(() => {
+      setThinking(true)
+      getKellyReply([], fromNudge, outcome).then(text => {
+        if (!text) return
+        setMessages(prev => [...prev, { from: 'them', text, time: now() }])
+        setThinking(false)
+      }).catch(() => setThinking(false))
+    }, 1500)
+    return () => clearTimeout(t)
   }, []) // eslint-disable-line
 
   if (!person) return null
@@ -122,7 +152,7 @@ export default function Chat({ chats, setChats }) {
     setMessages(updated)
     setInput('')
     setThinking(true)
-    const reply = await getKellyReply(updated, fromNudge).catch(() => '')
+    const reply = await getKellyReply(updated, fromNudge, outcome).catch(() => '')
     if (reply) setMessages(prev => [...prev, { from: 'them', text: reply, time: now() }])
     setThinking(false)
   }
