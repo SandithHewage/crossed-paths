@@ -3,17 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
 const AppLogo = () => (
-  <div
-    className="w-[72px] h-[72px] flex items-center justify-center"
-    style={{ borderRadius: 20, background: '#D5BDAF' }}
-  >
-    <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-      <circle cx="8" cy="29" r="4" fill="white" fillOpacity="0.9"/>
-      <circle cx="30" cy="9" r="4" fill="white" fillOpacity="0.5"/>
-      <path d="M8 29 C 12 22, 26 16, 30 9" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/>
-      <path d="M8 9 C 12 16, 26 22, 30 29" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.35"/>
-    </svg>
-  </div>
+  <img src="/logo.svg" width={72} height={72} style={{ borderRadius: 20 }} alt="Crossed Paths" />
 )
 
 const features = [
@@ -123,7 +113,7 @@ function PhoneScreen({ onContinue }) {
                 placeholder="your@ucsd.edu"
                 style={{
                   width: '100%', padding: '15px 16px', borderRadius: 14,
-                  background: '#EDEDE9', border: '1.5px solid #D6CCC2',
+                  background: '#EDEDE9', border: '1px solid #D6CCC2',
                   fontSize: 15, color: '#16112B', fontWeight: 500,
                   outline: 'none', boxSizing: 'border-box',
                 }}
@@ -146,7 +136,7 @@ function PhoneScreen({ onContinue }) {
                 placeholder="(555) 000-0000"
                 style={{
                   width: '100%', padding: '15px 16px 15px 42px', borderRadius: 14,
-                  background: '#EDEDE9', border: '1.5px solid #D6CCC2',
+                  background: '#EDEDE9', border: '1px solid #D6CCC2',
                   fontSize: 15, color: '#16112B', fontWeight: 500,
                   outline: 'none', boxSizing: 'border-box',
                 }}

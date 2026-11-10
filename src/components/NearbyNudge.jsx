@@ -17,7 +17,7 @@ export default function NearbyNudge({ nudge, setNudge }) {
         initial={{ opacity: 0, y: 24, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 12, scale: 0.97 }}
-        transition={{ type: 'spring', stiffness: 340, damping: 32, mass: 0.7 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
         style={{
           position: 'absolute',
           bottom: 80,
@@ -59,7 +59,7 @@ export default function NearbyNudge({ nudge, setNudge }) {
             style={{
               padding: '11px 18px', borderRadius: 12,
               background: '#F5EBE0', color: '#9B8C84',
-              fontSize: 14, fontWeight: 500, border: '1px solid #D6CCC2', cursor: 'pointer',
+              fontSize: 14, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
             }}
           >
             Not now

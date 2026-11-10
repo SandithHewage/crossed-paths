@@ -77,7 +77,7 @@ export default function OverlapDetail({ appState, setAppState }) {
         </div>
 
         <div className="px-5">
-          <div style={{ background: '#EDEDE9', borderRadius: 16, padding: '16px', border: '1px solid #D6CCC2' }}>
+          <div style={{ background: '#EDEDE9', borderRadius: 14, padding: '16px', border: '1px solid #D6CCC2' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{
                 width: 48, height: 48, borderRadius: 12, background: person.avatarBg,
@@ -132,10 +132,10 @@ export default function OverlapDetail({ appState, setAppState }) {
             {person.overlaps.map((o, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.08 + i * 0.07 }}
+                transition={{ delay: i * 0.07 }}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: '#EDEDE9', borderRadius: 12, padding: '12px 14px',
+                  background: '#EDEDE9', borderRadius: 14, padding: '12px 14px',
                   border: '1px solid #D6CCC2',
                 }}
               >

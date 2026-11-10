@@ -30,7 +30,7 @@ export default function Messages({ appState, chats }) {
             </p>
           </div>
         ) : (
-          <div style={{ padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <div style={{ padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
             {matched.map((person, i) => {
               const history = chats?.[person.id] ?? []
               const last = history[history.length - 1]
@@ -49,7 +49,7 @@ export default function Messages({ appState, chats }) {
                     src="/bear.png"
                     alt={person.name}
                     style={{
-                      width: 42, height: 42, borderRadius: '50%',
+                      width: 40, height: 40, borderRadius: '50%',
                       objectFit: 'cover', flexShrink: 0, border: '2px solid #C9906E',
                     }}
                   />
