@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { people } from '../data/people'
 import BottomNav from '../components/BottomNav'
-import { setUserZone, logEvent } from '../lib/presence'
+import { logEvent } from '../lib/presence'
+
+const ADJECTIVES = ['Sleepy', 'Fluffy', 'Tiny', 'Cozy', 'Clumsy', 'Bouncy', 'Soft', 'Silly', 'Fuzzy', 'Shy']
+const ANIMALS = ['Otter', 'Hamster', 'Bunny', 'Hedgehog', 'Duckling', 'Corgi', 'Koala', 'Chipmunk', 'Lamb', 'Fennec']
+const anonName = (id) => `${ADJECTIVES[id % ADJECTIVES.length]} ${ANIMALS[id % ANIMALS.length]}`
 
 const ChevronRight = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9B8C84" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -11,35 +15,24 @@ const ChevronRight = () => (
   </svg>
 )
 
-const ZONES = [
-  'Center Hall',
-  'Geisel Library',
-  'Price Center',
-  'CSE Building',
-  'Social Sciences Bldg',
-  'Natural Sciences Bldg',
-  'Rady School',
-]
+// Aggregate overlap locations weighted by crossCount
+const locationCounts = {}
+people.forEach(p => {
+  p.overlaps.forEach(o => {
+    locationCounts[o.location] = (locationCounts[o.location] || 0) + p.crossCount
+  })
+})
+const hotspots = Object.entries(locationCounts).sort((a, b) => b[1] - a[1]).slice(0, 5)
+const maxHeat = hotspots[0]?.[1] || 1
 
-export default function WeeklyPaths({ openToday, setOpenToday, zone, setZone }) {
+export default function WeeklyPaths({ zone, setZone }) {
   const navigate = useNavigate()
   const [paused, setPaused] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
-  const [showZonePicker, setShowZonePicker] = useState(false)
-
-  function pickZone(loc) {
-    setZone(loc)
-    setUserZone(loc)
-    logEvent('zone_set', { zone: loc })
-    setShowZonePicker(false)
-  }
-
-  function clearZone() {
-    setZone(null)
-    setUserZone(null)
-    setShowZonePicker(false)
-  }
-
+  const profile = JSON.parse(localStorage.getItem('userProfile') || '{}')
+  const displayName = profile.name || 'Sophie'
+  const displayMajor = profile.major || null
+  const displayTraits = (profile.traits || []).filter(t => t.trim())
   return (
     <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0', position: 'relative' }}>
       <div className="flex-1 overflow-y-auto scrollable">
@@ -54,15 +47,11 @@ export default function WeeklyPaths({ openToday, setOpenToday, zone, setZone }) 
               Your Paths
             </h2>
           </div>
-          <button
-            onClick={() => setShowProfile(true)}
-            style={{
-              width: 48, height: 48, borderRadius: '50%',
-              background: 'transparent', border: '2px solid #D4A574', cursor: 'pointer',
-              padding: 0, overflow: 'hidden',
-            }}
+          <button onClick={() => setShowProfile(true)}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
           >
-            <img src="/kitty.png" alt="Sophie" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src="/kitty.png" alt="Sophie" style={{ width: 44, height: 44, borderRadius: '50%', border: '2px solid #D4A574', objectFit: 'cover' }} />
+            <p style={{ fontSize: 9, color: '#9B8C84', fontWeight: 500 }}>Profile</p>
           </button>
         </div>
 
@@ -83,51 +72,37 @@ export default function WeeklyPaths({ openToday, setOpenToday, zone, setZone }) 
           ))}
         </div>
 
-        {/* Free to meet toggle */}
-        <div className="px-5 mt-4" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <button
-            onClick={() => setOpenToday(v => !v)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              background: '#EDEDE9', borderRadius: 14, padding: '12px 16px',
-              border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left', width: '100%',
-            }}
-          >
-            <span style={{
-              width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
-              background: openToday ? '#34D399' : '#D6CCC2',
-            }} />
-            <p style={{ fontSize: 13, color: '#16112B', fontWeight: 500, flex: 1 }}>Free to meet</p>
-            <span style={{
-              fontSize: 12, fontWeight: 600,
-              color: openToday ? '#065F46' : '#9B8C84',
-              background: openToday ? '#D1FAE5' : '#E3D5CA',
-              padding: '3px 10px', borderRadius: 999,
-              border: `1px solid ${openToday ? '#A7F3D0' : '#D6CCC2'}`,
-            }}>
-              {openToday ? 'On' : 'Off'}
-            </span>
-          </button>
-          <p style={{ fontSize: 12, color: '#9B8C84', paddingLeft: 4 }}>Only matches see this</p>
 
-          {/* Zone chip */}
-          <button
-            onClick={() => setShowZonePicker(true)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              background: '#EDEDE9', borderRadius: 14, padding: '12px 16px',
-              border: '1px solid #D6CCC2', cursor: 'pointer', textAlign: 'left', width: '100%',
-            }}
-          >
-            <span style={{
-              width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
-              background: zone ? '#34D399' : '#D6CCC2',
-            }} />
-            <p style={{ fontSize: 13, color: '#16112B', fontWeight: 500, flex: 1 }}>
-              You're at: <span style={{ color: zone ? '#16112B' : '#9B8C84' }}>{zone ?? 'Not set'}</span>
-            </p>
-            <ChevronRight />
-          </button>
+        {/* Hotspot heatmap */}
+        <div className="px-5 mt-5">
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#16112B', marginBottom: 10 }}>Where you cross paths most</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {hotspots.map(([location, count], i) => {
+              const pct = (count / maxHeat) * 100
+              const opacity = 0.25 + (pct / 100) * 0.75
+              return (
+                <motion.div key={location}
+                  initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.06 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10 }}
+                >
+                  <p style={{ fontSize: 12, color: '#6B5C55', width: 128, flexShrink: 0 }}>{location}</p>
+                  <div style={{ flex: 1, height: 8, background: '#E3D5CA', borderRadius: 99, overflow: 'hidden' }}>
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ delay: i * 0.06 + 0.1, duration: 0.5, ease: 'easeOut' }}
+                      style={{
+                        height: '100%', borderRadius: 99,
+                        background: `rgba(197, 148, 110, ${opacity})`,
+                      }}
+                    />
+                  </div>
+                  <p style={{ fontSize: 11, color: '#9B8C84', width: 24, textAlign: 'right', flexShrink: 0 }}>{count}×</p>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
 
         {/* Section label */}
@@ -164,19 +139,17 @@ export default function WeeklyPaths({ openToday, setOpenToday, zone, setZone }) 
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {person.major}
+                  {anonName(person.id)}
                 </p>
                 <p style={{ fontSize: 12, color: '#9B8C84', marginTop: 1 }}>
                   {person.year} · crossed {person.crossCount}×
                 </p>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-                <span style={{
-                  fontSize: 12, fontWeight: 700, color: '#16112B',
-                  background: '#E3D5CA', padding: '2px 8px', borderRadius: 999,
-                }}>
-                  {person.score}
-                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#16112B' }}>{person.score}</p>
+                  <p style={{ fontSize: 10, color: '#9B8C84' }}>score</p>
+                </div>
                 <ChevronRight />
               </div>
             </motion.button>
@@ -185,50 +158,6 @@ export default function WeeklyPaths({ openToday, setOpenToday, zone, setZone }) 
 
         <div className="mb-6" />
       </div>
-
-      {/* Zone picker bottom sheet */}
-      <AnimatePresence>
-        {showZonePicker && (
-          <div
-            onClick={() => setShowZonePicker(false)}
-            style={{
-              position: 'absolute', inset: 0,
-              background: 'rgba(44,35,32,0.35)', zIndex: 20,
-              display: 'flex', alignItems: 'flex-end',
-            }}
-          >
-            <motion.div
-              onClick={e => e.stopPropagation()}
-              initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-              transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
-              style={{
-                width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0',
-                padding: '28px 24px 40px', display: 'flex', flexDirection: 'column', gap: 10,
-              }}
-            >
-              <p style={{ fontSize: 15, fontWeight: 700, color: '#16112B', marginBottom: 6 }}>Where are you now?</p>
-              {ZONES.map(loc => (
-                <button key={loc} onClick={() => pickZone(loc)} style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  background: zone === loc ? '#D5BDAF' : '#EDEDE9',
-                  borderRadius: 14, padding: '12px 16px',
-                  border: `1px solid ${zone === loc ? '#C4A898' : '#D6CCC2'}`,
-                  cursor: 'pointer', textAlign: 'left', width: '100%',
-                }}>
-                  <p style={{ fontSize: 14, color: '#16112B', fontWeight: zone === loc ? 600 : 400 }}>{loc}</p>
-                </button>
-              ))}
-              <button onClick={clearZone} style={{
-                width: '100%', padding: '12px',
-                background: 'transparent', border: '1px solid #D6CCC2',
-                borderRadius: 14, fontSize: 13, color: '#9B8C84', cursor: 'pointer', marginTop: 4,
-              }}>
-                Clear
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* Profile sheet */}
       <AnimatePresence>
@@ -250,12 +179,27 @@ export default function WeeklyPaths({ openToday, setOpenToday, zone, setZone }) 
                 padding: '32px 24px 40px', display: 'flex', flexDirection: 'column', alignItems: 'center',
               }}
             >
-              <img src="/kitty.png" alt="Sophie" style={{
-                width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', marginBottom: 16,
+              <img src="/kitty.png" alt="Profile" style={{
+                width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', marginBottom: 14,
                 border: '3px solid #D4A574',
               }} />
-              <p style={{ fontSize: 14, fontWeight: 600, color: '#16112B', marginBottom: 2 }}>Sophie</p>
-              <p style={{ fontSize: 13, color: '#9B8C84', marginBottom: 24 }}>You</p>
+              <p style={{ fontSize: 17, fontWeight: 700, color: '#16112B', marginBottom: 2 }}>{displayName}</p>
+              {displayMajor && (
+                <p style={{ fontSize: 13, color: '#6B5C55', marginBottom: 4 }}>{displayMajor}</p>
+              )}
+              <p style={{ fontSize: 12, color: '#9B8C84', marginBottom: displayTraits.length ? 14 : 24 }}>UCSD · You</p>
+
+              {displayTraits.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center', marginBottom: 20 }}>
+                  {displayTraits.map((t, i) => (
+                    <span key={i} style={{
+                      fontSize: 12, fontWeight: 500, color: '#6B5C55',
+                      background: '#EDEDE9', border: '1px solid #D6CCC2',
+                      padding: '5px 12px', borderRadius: 999,
+                    }}>{t}</span>
+                  ))}
+                </div>
+              )}
 
               <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {/* Tracking status */}

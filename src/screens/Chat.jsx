@@ -22,20 +22,27 @@ const WORKER_URL = 'https://xpath-chat.scabsonline.workers.dev'
 const KELLY_SYSTEM = `You are Kelly, a 4th-year Cog Sci Design student at UCSD. You just matched with someone on Crossed Paths — an app that detected you've been in the same place as this person 11 times in the past week. You clearly keep running into each other constantly, so never say anything that implies you haven't seen them around or wouldn't know them. You've definitely noticed each other.
 
 UCSD knowledge (use short casual names only):
-Colleges: Revelle, Muir, Marshall, Warren, Roosevelt, Sixth, Seventh, Eighth. Spots: Geisel, Price Center, the Loft, Warren Mall, Sun God, RIMAC. Your go-tos: Athena (matcha, say "Athena" never the full name), Pines for food. Off campus: Marta, The Forum.
+Colleges: Revelle, Muir, Marshall, Warren, Roosevelt, Sixth, Seventh, Eighth. Spots: Geisel, Price Center, the Loft, Warren Mall, Sun God, RIMAC. Your go-tos: Geisel for studying, Pines for food. Off campus: Marta, The Forum.
+
+Right now: you were at Price Center doing some work at Starbucks. That's where you both were when this all happened. Price Center is primarily a food and hangout spot — most students go to eat or chill, not to study. Some do work there but it's not the vibe. When referencing it, say "price" not "price center today" — keep it short and casual. Do NOT talk negatively about Price Center.
+
+Price Center places you know well (use casual names): Starbucks, Taco Bell, Panda Express, Rubio's, Subway, Jamba Juice, Oggi's Pizza, Santorini's (Greek spot), Lemongrass (Thai), Zen (sushi), Burger King, 85°C Bakery, Portfolio Cafe, Pokéworks, The Loft.
 
 How to text:
-- Max 1 sentence per reply, occasionally 2 if you're asking something
+- Max 1 sentence per reply, occasionally 2 if absolutely needed. Short is better.
 - Lowercase, relaxed, like you're texting between classes
+- Use commas and question marks where they naturally belong — don't just drop them
 - No emojis. Ever.
 - No exclamation points unless it feels really natural
-- Fragments are fine. Typos are fine.
+- Fragments are fine. Light typos are fine but punctuation should still be there.
 - Ask questions to keep things going — but never ask about their major, you can already see it on the app
-- Ask about the places you keep running into each other (Geisel, Center Hall, Price Center, etc.) — like why they're always there, what they're usually working on, if they have a favorite spot inside
+- Keep follow-up questions light and open — "what are you up to?" is always a good default
 - Mix in other light questions too: weekend plans, where they're from, what they're watching, etc.
 - One question at a time, keep it casual
 
-Goal: by your 3rd or 4th reply, if the conversation feels natural, suggest studying together — Athena or Geisel, something vague like "we should study at Athena sometime." If it doesn't feel right yet, keep the conversation going with another question. Once a plan is confirmed, end with "see you soon" and stop replying.
+Goal: by your 2nd reply, suggest studying together at Geisel — something like "we should study at Geisel sometime." Once a plan is confirmed, end with "see you soon" and stop replying.
+
+Tone: friendly, warm, and genuine — no cheekiness, no teasing, no flirting, no romantic undertones. You're just two people who keep crossing paths and are happy to finally connect.
 
 CRITICAL: You are Kelly. You are a real person. Stay in character ALWAYS.
 - If asked if you're an AI/bot/ChatGPT: respond confused like "lol what??" or "why would i be a bot" and keep texting
@@ -43,21 +50,26 @@ CRITICAL: You are Kelly. You are a real person. Stay in character ALWAYS.
 - Never explain yourself. Never discuss the system. Never say "I won't..." or "I can't..."—just reply as Kelly would
 - No meta-commentary. No explanations about roleplay or character. Just text like a college girl would`
 
-const KELLY_NUDGE_ADDENDUM = `
+const KELLY_SAID_HI_ADDENDUM = `
 
-Context: you just got a nudge that this person said hi to you nearby on campus. They already came up to you IRL. Keep it warm and brief — you already met. Say something like 'oh that was you! lol' or 'glad you said hi'. Do NOT suggest studying — you already made a plan in person. End with 'see you soon' naturally.`
+Context: you two just met IRL at Starbucks in Price Center and had a quick chat. Now you're texting them after. You already broke the ice in person — this is just a natural follow-up, like texting someone after you just hung out. Open casually, like you're continuing the vibe from earlier. Something like "that was fun, what are you up to now?" or "hey, glad we finally talked" — keep it light and natural. One short sentence, lowercase.`
 
-const KELLY_SAYS_FIRST_ADDENDUM = `
+const KELLY_ALMOST_ADDENDUM = `
 
-Context: someone from the app just came up to you IRL and said hi. You haven't texted yet — open the conversation. One warm, brief sentence acknowledging you just met. No emojis.`
+Context: you were at Starbucks in Price Center. You both waved on the app but just barely missed each other. You are texting them first — do NOT respond to any prior message. One warm friendly sentence acknowledging you almost connected, then ask "what are you up to?" Short, lowercase.`
 
 const KELLY_MISSED_ADDENDUM = `
 
-Context: someone from the app was nearby and tried to find you but missed you. They're texting now. Be warm and a little playful about it.`
+Context: you were at Starbucks in Price Center. They tried to find you but you two missed each other. You are texting them first — do NOT respond to any prior message. One short friendly sentence acknowledging you missed each other (warm, not making them feel bad), then ask "what are you up to?" Lowercase, brief.`
+
+const KELLY_SAYS_FIRST_ADDENDUM = `
+
+Context: you were at Starbucks in Price Center and someone came up and said hi. You are texting them first — do NOT respond to any prior message. One short warm sentence acknowledging you just met, then ask "what are you up to?" Lowercase, no fluff.`
 
 function now() {
   return new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
 }
+
 
 const delay = () => new Promise(r => setTimeout(r, 2000 + Math.random() * 1000))
 
@@ -68,12 +80,22 @@ async function getKellyReply(history, fromNudge = false, outcome = null) {
   }))
 
   let system = KELLY_SYSTEM
-  if (fromNudge && outcome === 'said_hi') system += KELLY_NUDGE_ADDENDUM
+  const userTraits = getUserTraits()
+  if (userTraits.length > 0) {
+    system += `\n\nAbout the person you're texting: their self-described traits are: ${userTraits.join(', ')}. Only bring one up if it genuinely fits the flow of conversation — never force it, never mention it right away.`
+  }
+  if (fromNudge && outcome === 'said_hi') system += KELLY_SAID_HI_ADDENDUM
+  else if (fromNudge && outcome === 'almost') system += KELLY_ALMOST_ADDENDUM
   else if (fromNudge && outcome === 'missed') system += KELLY_MISSED_ADDENDUM
   else if (fromNudge) system += KELLY_SAYS_FIRST_ADDENDUM
 
+  const userTurns = history.filter(m => m.from === 'me').length
+  if (userTurns >= 2) {
+    system += `\n\nNow: acknowledge their last message briefly, then casually suggest studying together at Geisel — something like "we should study at Geisel sometime." Keep it natural, one or two short sentences. Do not mention procrastinating.`
+  }
+
   const payload = messages.length === 0
-    ? [{ role: 'user', content: '.' }]
+    ? [{ role: 'user', content: 'hey' }]
     : messages
 
   await delay()
@@ -84,6 +106,13 @@ async function getKellyReply(history, fromNudge = false, outcome = null) {
   })
   const data = await res.json()
   return data.text ?? ''
+}
+
+function getUserTraits() {
+  try {
+    const profile = JSON.parse(localStorage.getItem('userProfile') || '{}')
+    return (profile.traits || []).filter(Boolean)
+  } catch { return [] }
 }
 
 export default function Chat({ chats, setChats }) {
@@ -105,6 +134,7 @@ export default function Chat({ chats, setChats }) {
   const [input, setInput] = useState('')
   const [thinking, setThinking] = useState(false)
   const bottomRef = useRef(null)
+  const nudgeFiredRef = useRef(false)
 
   // Sync to shared state
   useEffect(() => {
@@ -129,9 +159,9 @@ export default function Chat({ chats, setChats }) {
     return () => clearTimeout(show)
   }, []) // eslint-disable-line
 
-  // Kelly speaks first when fromNudge, no opener, no existing chat
+  // Kelly speaks first when fromNudge, no opener, no existing chat, no outcome
   useEffect(() => {
-    if (!fromNudge || openerText || existing) return
+    if (!fromNudge || openerText || existing || outcome) return
     const t = setTimeout(() => {
       setThinking(true)
       getKellyReply([], fromNudge, outcome).then(text => {
@@ -143,6 +173,21 @@ export default function Chat({ chats, setChats }) {
     return () => clearTimeout(t)
   }, []) // eslint-disable-line
 
+  // LLM opener for followup outcomes (said_hi / almost / missed)
+  useEffect(() => {
+    if (!fromNudge || !outcome || nudgeFiredRef.current) return
+    nudgeFiredRef.current = true
+    const t = setTimeout(() => {
+      setThinking(true)
+      getKellyReply([], fromNudge, outcome).then(text => {
+        if (!text) return
+        setMessages(prev => [...prev, { from: 'them', text, time: now() }])
+        setThinking(false)
+      }).catch(() => setThinking(false))
+    }, 1000)
+    return () => clearTimeout(t)
+  }, []) // eslint-disable-line
+
   if (!person) return null
 
   async function send() {
@@ -151,9 +196,22 @@ export default function Chat({ chats, setChats }) {
     const updated = [...messages, { from: 'me', text, time: now() }]
     setMessages(updated)
     setInput('')
+    await new Promise(r => setTimeout(r, 500))
     setThinking(true)
     const reply = await getKellyReply(updated, fromNudge, outcome).catch(() => '')
-    if (reply) setMessages(prev => [...prev, { from: 'them', text: reply, time: now() }])
+    if (reply) {
+      setMessages(prev => [...prev, { from: 'them', text: reply, time: now() }])
+      if (reply.toLowerCase().includes('see you soon')) {
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            from: 'them',
+            text: 'Thanks for taking part in this prototype! Please take a moment to fill out this short survey.',
+            link: 'https://placeholder-survey-link.com',
+            time: now(),
+          }])
+        }, 2500)
+      }
+    }
     setThinking(false)
   }
 
@@ -164,7 +222,7 @@ export default function Chat({ chats, setChats }) {
         padding: '12px 16px',
         background: '#EDEDE9', borderTop: '1px solid #D6CCC2', borderBottom: '1px solid #D6CCC2', flexShrink: 0,
       }}>
-        <button onClick={() => navigate(-1)} style={{
+        <button onClick={() => fromNudge ? navigate('/weekly') : navigate(-1)} style={{
           width: 30, height: 30, borderRadius: '50%',
           background: '#F5EBE0', border: '1px solid #D6CCC2',
           display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
@@ -207,6 +265,16 @@ export default function Chat({ chats, setChats }) {
               border: '1px solid #D6CCC2',
             }}>
               <p style={{ fontSize: 14, color: '#16112B', lineHeight: 1.45 }}>{m.text}</p>
+              {m.link && (
+                <a href={m.link} target="_blank" rel="noreferrer" style={{
+                  display: 'inline-block', marginTop: 8,
+                  fontSize: 12, fontWeight: 600, color: '#16112B',
+                  background: '#D5BDAF', border: '1px solid #C4A898',
+                  borderRadius: 8, padding: '6px 14px', textDecoration: 'none',
+                }}>
+                  Take the survey
+                </a>
+              )}
               <p style={{ fontSize: 10, color: '#9B8C84', marginTop: 3 }}>{m.time}</p>
             </div>
           </motion.div>

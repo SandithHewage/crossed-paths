@@ -8,28 +8,35 @@ const PathsIcon = ({ active }) => (
   </svg>
 )
 
-const HeartIcon = ({ active }) => (
+const SmileyIcon = ({ active }) => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-      stroke={active ? '#16112B' : '#9B8C84'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+    <circle cx="12" cy="12" r="10"
+      stroke={active ? '#16112B' : '#9B8C84'} strokeWidth="1.8"
       fill={active ? '#E3D5CA' : 'none'}
     />
+    <path d="M8 14s1.5 2 4 2 4-2 4-2"
+      stroke={active ? '#16112B' : '#9B8C84'} strokeWidth="1.8" strokeLinecap="round"
+    />
+    <circle cx="9" cy="10" r="1" fill={active ? '#16112B' : '#9B8C84'} />
+    <circle cx="15" cy="10" r="1" fill={active ? '#16112B' : '#9B8C84'} />
   </svg>
 )
 
-const ChatIcon = ({ active }) => (
+const MapIcon = ({ active }) => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
       stroke={active ? '#16112B' : '#9B8C84'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
       fill={active ? '#E3D5CA' : 'none'}
     />
+    <line x1="8" y1="2" x2="8" y2="18" stroke={active ? '#16112B' : '#9B8C84'} strokeWidth="1.8" strokeLinecap="round"/>
+    <line x1="16" y1="6" x2="16" y2="22" stroke={active ? '#16112B' : '#9B8C84'} strokeWidth="1.8" strokeLinecap="round"/>
   </svg>
 )
 
 const tabs = [
   { label: 'Paths',    path: '/weekly',   Icon: PathsIcon },
-  { label: 'Matches',  path: '/matches',  Icon: HeartIcon },
-  { label: 'Messages', path: '/messages', Icon: ChatIcon },
+  { label: 'Map',      path: '/map',      Icon: MapIcon },
+  { label: 'Matches', path: '/messages', Icon: SmileyIcon },
 ]
 
 export default function BottomNav() {

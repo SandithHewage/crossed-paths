@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react' // v2
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useParams } from 'react-router-dom'
 import { people } from '../data/people'
@@ -39,15 +39,7 @@ export default function OverlapDetail({ appState, setAppState }) {
   const navigate = useNavigate()
   const [connected, setConnected] = useState(appState?.connected?.[person?.id])
   const [showMatch, setShowMatch] = useState(false)
-  const [opener, setOpener] = useState("hey! i think i've seen you around geisel a few times lol, glad we matched")
-  const textareaRef = useRef(null)
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
-    }
-  }, [opener])
+  const [showNotif, setShowNotif] = useState(false)
 
   if (!person) return null
 
@@ -57,12 +49,57 @@ export default function OverlapDetail({ appState, setAppState }) {
     if (person.id === 1) setTimeout(() => setShowMatch(true), 500)
   }
 
+  function handleDone() {
+    setShowMatch(false)
+    if (person.id === 1) {
+      setTimeout(() => {
+        setShowNotif(true)
+        setTimeout(() => setShowNotif(false), 4000)
+      }, 1000)
+    }
+  }
+
   const freq = Math.round(person.score * 0.4)
   const cons = Math.round(person.score * 0.35)
   const sched = person.score - freq - cons
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" style={{ background: '#F5EBE0', position: 'relative', zIndex: 0 }}>
+
+      {/* Top notification */}
+      <AnimatePresence>
+        {showNotif && (
+          <motion.div
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -80, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 340, damping: 32 }}
+            style={{
+              position: 'absolute', top: 12, left: 12, right: 12, zIndex: 50,
+              background: '#EDEDE9', border: '1px solid #D6CCC2',
+              borderRadius: 22, padding: '20px 22px',
+              display: 'flex', alignItems: 'center', gap: 14,
+              boxShadow: '0 6px 24px rgba(0,0,0,0.14)',
+            }}
+          >
+            <span style={{
+              width: 12, height: 12, borderRadius: '50%', background: '#34D399',
+              boxShadow: '0 0 0 3px rgba(52,211,153,0.25)', flexShrink: 0,
+            }} />
+            <p style={{ flex: 1, fontSize: 17, fontWeight: 600, color: '#16112B' }}>Kelly is nearby</p>
+            <button
+              onClick={() => { setShowNotif(false); navigate('/map') }}
+              style={{
+                fontSize: 14, fontWeight: 600, color: '#16112B',
+                background: '#D5BDAF', border: '1px solid #C4A898',
+                borderRadius: 12, padding: '9px 16px', cursor: 'pointer', flexShrink: 0,
+              }}
+            >
+              View Map
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="flex-1 overflow-y-auto scrollable">
 
         <div className="flex items-center gap-3 px-5 pt-5 pb-3">
@@ -88,7 +125,7 @@ export default function OverlapDetail({ appState, setAppState }) {
               </div>
               <div>
                 <p style={{ fontSize: 15, fontWeight: 600, color: '#16112B' }}>{person.major}</p>
-                <p style={{ fontSize: 13, color: '#9B8C84' }}>{person.year}</p>
+                <p style={{ fontSize: 13, color: '#9B8C84', marginTop: 1 }}>{person.year}</p>
               </div>
               <div style={{ marginLeft: 'auto' }}>
                 <span style={{
@@ -100,6 +137,12 @@ export default function OverlapDetail({ appState, setAppState }) {
                 </span>
               </div>
             </div>
+
+            {person.traits && (
+              <p style={{ fontSize: 12.5, color: '#9B8C84', marginTop: 8, lineHeight: 1.4 }}>
+                {person.traits.join(' · ')}
+              </p>
+            )}
 
             <div style={{ height: 1, background: '#D6CCC2', margin: '14px 0' }} />
 
@@ -171,7 +214,7 @@ export default function OverlapDetail({ appState, setAppState }) {
                 fontSize: 14, fontWeight: 600, textAlign: 'center',
                 border: '1px solid #D6CCC2',
               }}>
-                Request sent
+                You're open to saying hi
               </div>
             )
           ) : (
@@ -180,11 +223,11 @@ export default function OverlapDetail({ appState, setAppState }) {
               background: '#D5BDAF', color: '#16112B',
               fontSize: 15, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
             }}>
-              Open to saying hi
+              I'm open to saying hi
             </button>
           )}
           <p style={{ textAlign: 'center', fontSize: 12, color: '#9B8C84', marginTop: 8 }}>
-            They'll only know if they're open too.
+            You'll both be notified when you're nearby.
           </p>
         </div>
       </div>
@@ -192,7 +235,7 @@ export default function OverlapDetail({ appState, setAppState }) {
       <AnimatePresence>
         {showMatch && (
           <div
-            onClick={() => setShowMatch(false)}
+            onClick={handleDone}
             style={{
               position: 'absolute', inset: 0,
               background: 'rgba(44,35,32,0.35)',
@@ -203,7 +246,7 @@ export default function OverlapDetail({ appState, setAppState }) {
               onClick={e => e.stopPropagation()}
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 320, damping: 36, mass: 0.8 }}
-              style={{ width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0', padding: '28px 24px 36px' }}
+              style={{ width: '100%', background: '#F5EBE0', borderRadius: '24px 24px 0 0', padding: '28px 24px 36px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                 <div style={{ position: 'relative', width: 96, height: 56 }}>
@@ -226,55 +269,23 @@ export default function OverlapDetail({ appState, setAppState }) {
                 </div>
               </div>
 
-              <p style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: '#9B8C84', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>
-                You're both open to saying hi
-              </p>
-              <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 700, color: '#16112B', letterSpacing: '-0.3px', marginBottom: 4 }}>
-                Meet Kelly
+              <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 700, color: '#16112B', letterSpacing: '-0.3px', marginBottom: 0 }}>
+                You crossed with {person.name}!
               </h2>
-              <p style={{ textAlign: 'center', fontSize: 13, color: '#9B8C84', marginBottom: 18 }}>
-                {person.major} · {person.year}
+              <p style={{ textAlign: 'center', fontSize: 13, color: '#9B8C84', marginTop: 8, marginBottom: 24, maxWidth: 240, alignSelf: 'center' }}>
+                Kelly is open to saying hi too. You'll both be notified when you're nearby.
               </p>
 
-              <div style={{ background: '#EDEDE9', borderRadius: 12, padding: '12px 14px', marginBottom: 18, border: '1px solid #D6CCC2' }}>
-                <p style={{ fontSize: 11, fontWeight: 600, color: '#9B8C84', marginBottom: 6 }}>Suggested opener</p>
-                <textarea
-                  ref={textareaRef}
-                  value={opener}
-                  onChange={e => setOpener(e.target.value)}
-                  style={{
-                    width: '100%', fontSize: 13.5, color: '#16112B', lineHeight: 1.5,
-                    background: 'transparent', border: 'none',
-                    outline: 'none', resize: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-                    overflow: 'hidden',
-                  }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-<div style={{ display: 'flex', gap: 8 }}>
-                  <button
-                    onClick={() => { setShowMatch(false); navigate('/chat/1', { state: { opener, fromNudge: false } }) }}
-                    style={{
-                      flex: 1, padding: '11px 0', borderRadius: 12,
-                      background: 'transparent', color: '#6B5C55',
-                      fontSize: 13, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
-                    }}
-                  >
-                    Send a message
-                  </button>
-                  <button
-                    onClick={() => setShowMatch(false)}
-                    style={{
-                      padding: '11px 18px', borderRadius: 12,
-                      background: 'transparent', color: '#9B8C84',
-                      fontSize: 13, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
-                    }}
-                  >
-                    Later
-                  </button>
-                </div>
-              </div>
+              <button
+                onClick={handleDone}
+                style={{
+                  width: '100%', padding: '14px 0', borderRadius: 14,
+                  background: '#D5BDAF', color: '#16112B',
+                  fontSize: 15, fontWeight: 600, border: '1px solid #D6CCC2', cursor: 'pointer',
+                }}
+              >
+                Done
+              </button>
             </motion.div>
           </div>
         )}

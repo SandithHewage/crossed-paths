@@ -260,27 +260,240 @@ function LocationScreen({ onContinue }) {
   )
 }
 
+const inputStyle = {
+  width: '100%', padding: '14px 16px', borderRadius: 14,
+  background: '#EDEDE9', border: '1px solid #D6CCC2',
+  fontSize: 14, color: '#16112B', fontWeight: 500,
+  outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
+}
+
+function ProfileScreen({ onContinue }) {
+  const [name, setName] = useState('')
+  const [major, setMajor] = useState('')
+  const [traits, setTraits] = useState(['', '', ''])
+  const canContinue = name.trim().length > 0 && major.trim().length > 0
+
+  const setTrait = (i, val) => setTraits(prev => prev.map((t, idx) => idx === i ? val : t))
+
+  return (
+    <div className="flex-1 flex flex-col justify-between px-6 pb-8 pt-4">
+      <div className="flex flex-col items-center mt-10 gap-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="w-[88px] h-[88px] flex items-center justify-center"
+          style={{ borderRadius: 24, background: '#E3D5CA' }}
+        >
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#16112B" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="text-center"
+        >
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: '#16112B', letterSpacing: '-0.4px', lineHeight: 1.25 }}>
+            Set up your profile
+          </h2>
+          <p style={{ marginTop: 10, fontSize: 14.5, color: '#6B5C55', lineHeight: 1.65 }}>
+            So others know who they're crossing paths with
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          className="w-full flex flex-col gap-3"
+        >
+          <input style={inputStyle} placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
+          <input style={inputStyle} placeholder="e.g. Cognitive Science" value={major} onChange={e => setMajor(e.target.value)} />
+          <p style={{ fontSize: 12, color: '#9B8C84', paddingLeft: 2 }}>Three things about you</p>
+          <input style={inputStyle} placeholder="e.g. Coffee addict" value={traits[0]} onChange={e => setTrait(0, e.target.value)} />
+          <input style={inputStyle} placeholder="e.g. Cat person" value={traits[1]} onChange={e => setTrait(1, e.target.value)} />
+          <input style={inputStyle} placeholder="e.g. Sunrise hiker" value={traits[2]} onChange={e => setTrait(2, e.target.value)} />
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, duration: 0.4 }}
+        className="flex flex-col gap-3"
+      >
+        <button
+          onClick={() => {
+            if (!canContinue) return
+            localStorage.setItem('userProfile', JSON.stringify({ name, major, traits }))
+            onContinue()
+          }}
+          style={{
+            width: '100%', padding: '15px 0', borderRadius: 14,
+            background: canContinue ? '#D5BDAF' : '#E3D5CA', color: '#16112B',
+            fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px',
+            border: '1px solid #D6CCC2', cursor: canContinue ? 'pointer' : 'default',
+            transition: 'background 0.2s',
+          }}
+        >
+          Continue
+        </button>
+        <button
+          onClick={() => onContinue()}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: '#9B8C84', fontSize: 13, padding: '4px 0',
+          }}
+        >
+          Skip for now
+        </button>
+      </motion.div>
+    </div>
+  )
+}
+
+const ZONES = [
+  // Food & hangout
+  'Price Center', '64 Degrees', "Earl's Place", 'Sixth Market', 'Canyon Vista', 'Pines Dining',
+  // Lecture halls & academic
+  'Center Hall', 'Peterson Hall', 'Warren Lecture Hall', 'York Hall',
+  'Geisel Library', 'Biomedical Library', 'CSE Building', 'Cognitive Science Bldg',
+  // Social & rec
+  'Sun God Lawn', 'Library Walk', 'RIMAC Arena', 'Warren Mall', 'Main Gym',
+]
+
+function LogYourDayScreen({ onContinue }) {
+  const [selected, setSelected] = useState([])
+  const toggle = (zone) => setSelected(prev => prev.includes(zone) ? prev.filter(z => z !== zone) : [...prev, zone])
+  const canContinue = selected.length > 0
+
+  return (
+    <div className="flex-1 flex flex-col justify-between px-6 pb-8 pt-4">
+      <div className="flex flex-col items-center mt-10 gap-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="w-[88px] h-[88px] flex items-center justify-center"
+          style={{ borderRadius: 24, background: '#E3D5CA' }}
+        >
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#16112B" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="text-center"
+        >
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: '#16112B', letterSpacing: '-0.4px', lineHeight: 1.25 }}>
+            Log Your Day
+          </h2>
+          <p style={{ marginTop: 10, fontSize: 14.5, color: '#6B5C55', lineHeight: 1.65 }}>
+            Where were you on campus today?
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16, width: '100%', justifyContent: 'center' }}
+        >
+          {ZONES.map(zone => {
+            const sel = selected.includes(zone)
+            return (
+              <button
+                key={zone}
+                onClick={() => toggle(zone)}
+                style={{
+                  padding: '9px 16px', borderRadius: 999, fontSize: 13, fontWeight: 500,
+                  background: sel ? '#D5BDAF' : '#EDEDE9',
+                  border: `1px solid ${sel ? '#C4A898' : '#D6CCC2'}`,
+                  color: '#16112B', cursor: 'pointer', transition: 'all 0.15s',
+                }}
+              >
+                {zone}
+              </button>
+            )
+          })}
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, duration: 0.4 }}
+        className="flex flex-col gap-3"
+      >
+        <button
+          onClick={() => canContinue && onContinue()}
+          style={{
+            width: '100%', padding: '15px 0', borderRadius: 14,
+            background: canContinue ? '#D5BDAF' : '#E3D5CA', color: '#16112B',
+            fontSize: 15, fontWeight: 600, letterSpacing: '-0.1px',
+            border: '1px solid #D6CCC2', cursor: canContinue ? 'pointer' : 'default',
+            transition: 'background 0.2s',
+          }}
+        >
+          Show my weekly digest
+        </button>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function Onboarding() {
   const navigate = useNavigate()
   const [step, setStep] = useState('phone')
 
+  const screens = {
+    phone: (
+      <motion.div key="phone" className="flex-1 flex flex-col"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.25 }}
+      >
+        <PhoneScreen onContinue={() => setStep('location')} />
+      </motion.div>
+    ),
+    location: (
+      <motion.div key="location" className="flex-1 flex flex-col"
+        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.25 }}
+      >
+        <LocationScreen onContinue={() => setStep('profile')} />
+      </motion.div>
+    ),
+    profile: (
+      <motion.div key="profile" className="flex-1 flex flex-col"
+        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.25 }}
+      >
+        <ProfileScreen onContinue={() => setStep('logday')} />
+      </motion.div>
+    ),
+    logday: (
+      <motion.div key="logday" className="flex-1 flex flex-col"
+        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+      >
+        <LogYourDayScreen onContinue={() => navigate('/weekly')} />
+      </motion.div>
+    ),
+  }
+
   return (
     <AnimatePresence mode="wait">
-      {step === 'phone' ? (
-        <motion.div key="phone" className="flex-1 flex flex-col"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.25 }}
-        >
-          <PhoneScreen onContinue={() => setStep('location')} />
-        </motion.div>
-      ) : (
-        <motion.div key="location" className="flex-1 flex flex-col"
-          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          <LocationScreen onContinue={() => navigate('/weekly')} />
-        </motion.div>
-      )}
+      {screens[step]}
     </AnimatePresence>
   )
 }
